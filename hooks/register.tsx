@@ -37,6 +37,8 @@ const isCelebrated = atom({ plugin: 'mission-crew', key: 'isCelebrated' } as con
 
 const SIDEBAR = 'mission-crew'
 const HATS = 'mission-crew-hats'
+// Room for the band's longest crew label, "99 agents working ›".
+const CREW_LABEL_COLUMNS = 20
 // The record across sessions lives in the plugin's store under this key.
 const STATS_KEY = 'stats'
 
@@ -726,11 +728,15 @@ export const register: Register = (on, options) => {
                 isInteractive
               />
             </Box>
-            {m.crew > 0 ? (
-              <Button key="crew-button" plain onPress={() => openCrew($)}>
-                <Text color={tone}>{crewLabel} ›</Text>
-              </Button>
-            ) : null}
+            {/* As wide as the longest label, so Claude beside it stays put when
+                "working" turns to "done" and the label gets shorter. */}
+            <Box key="crew-label" width={CREW_LABEL_COLUMNS} flexShrink={0}>
+              {m.crew > 0 ? (
+                <Button key="crew-button" plain onPress={() => openCrew($)}>
+                  <Text color={tone}>{crewLabel} ›</Text>
+                </Button>
+              ) : null}
+            </Box>
           </Box>
         </Box>
         <Box key="bar" flexDirection="row" flexWrap="nowrap" alignItems="center">

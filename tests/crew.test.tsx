@@ -307,3 +307,25 @@ test('with sound and notifications off the party is quiet', { options: { sound: 
   expect(await ui.find({ type: 'Text', text: 'MISSION COMPLETE!' })).toBeDefined()
   await ui.unmount()
 })
+
+test("the band's Claude keeps his spot when working turns to done", async ($, on) => {
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('clock.now', () => ({ value: 1_000 }))
+  on('agent.list', () => ({ value: [] }))
+  on('turn.complete', () => ({ text: '' }))
+  on('process.run', () => ({ value: RAN }))
+  mock.store(on)
+
+  await $.agent.spawn(SPAWN)
+  let ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  const working = await ui.find({ key: 'crew-label' })
+  expect((await ui.find({ key: 'crew-button' }))?.text).toContain('1 agent working')
+  await ui.unmount()
+
+  await $.turn.complete({ agentId: 'a1', turnId: 't1', answer: '', durationMs: 5, isAborted: false, reason: 'answer' })
+  ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect((await ui.find({ key: 'crew-button' }))?.text).toContain('1 agent done')
+  // The label's slot is one width either way, so nothing beside it moves.
+  expect((await ui.find({ key: 'crew-label' }))?.props.width).toBe(working?.props.width)
+  await ui.unmount()
+})
