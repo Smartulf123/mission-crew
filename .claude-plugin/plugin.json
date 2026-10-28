@@ -1,9 +1,23 @@
 {
   "name": "mission-crew",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A mission bar above the prompt while Claude works a plan, and a sidebar of pixel Claudes in hats, one for every subagent at work.",
   "author": { "name": "Smartulf123" },
   "license": "MIT",
   "homepage": "https://github.com/Smartulf123/mission-crew",
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "sound": {
+      "type": "boolean",
+      "title": "Sound",
+      "description": "Play an 8-bit jingle when a mission completes and when you unlock a hat",
+      "default": true
+    },
+    "notifications": {
+      "type": "boolean",
+      "title": "Notifications",
+      "description": "Tell you when a mission completes: a notification where your terminal sends them, else a toast",
+      "default": true
+    }
+  }
 }

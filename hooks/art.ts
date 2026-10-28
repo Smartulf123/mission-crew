@@ -19,6 +19,7 @@ export type GuyMode = 'work' | 'run' | 'idle' | 'done' | 'fail'
 
 const SKIN = '#D97757'
 const SKIN_FAIL = '#9A8C86'
+const SKIN_SHINY = '#F2B83A'
 const INK = '#1E1412'
 
 const STYLE = `<style>
@@ -51,6 +52,8 @@ const STYLE = `<style>
 @keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
 .wiggle{animation:wiggle .5s steps(1) infinite}
 @keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.halo{animation:halo 1.2s steps(1) infinite}
+@keyframes halo{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
 .trail{animation:trail .6s steps(3) infinite}
 @keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -102,9 +105,22 @@ export const OUTFITS = [
   'chef hat',
   'headphones',
   'pirate bandana',
+  // The six below are earned: see UNLOCKS.
+  'golden crown',
+  'halo',
+  'astronaut helmet',
+  'rubber duck',
+  'graduation cap',
+  'unicorn horn',
 ] as const
 
-const TITLES = ['Sir', 'Wizard', 'Sheriff', 'Chill', 'King', 'Foreman', 'Party', 'Professor', 'Jarl', 'Chef', 'DJ', 'Captain']
+/** Outfits every crew can wear from the start; the rest are unlocked. */
+export const STARTER_OUTFITS = 12
+
+const TITLES = [
+  'Sir', 'Wizard', 'Sheriff', 'Chill', 'King', 'Foreman', 'Party', 'Professor', 'Jarl', 'Chef', 'DJ', 'Captain',
+  'Emperor', 'Saint', 'Cosmo', 'Debugger', 'Dr.', 'Mystic',
+]
 
 const NAMES = [
   'Pixel', 'Byte', 'Nibble', 'Biscuit', 'Mochi', 'Pebble', 'Waffle', 'Noodle',
@@ -158,10 +174,32 @@ function hat(outfit: number): string {
     }
     case 10:
       return `${spans([[-1, 4, 13, '#2C2C3A'], [0, 1, 2, '#2C2C3A'], [1, 1, 2, '#FF6FA3'], [0, 15, 16, '#2C2C3A'], [1, 15, 16, '#FF6FA3'], [-1, 3, 3, '#2C2C3A'], [-1, 14, 14, '#2C2C3A']])}<g class="bit">${spans([[-3, 0, 0, '#7DE2FF'], [-4, 1, 1, '#7DE2FF']])}</g><g class="bit" style="animation-delay:-.8s">${spans([[-3, 17, 17, '#FFD166'], [-4, 16, 16, '#FFD166']])}</g>`
-    default: {
+    case 11: {
       const r = '#D7263D'
       return spans([[-1, 3, 14, r], [-2, 4, 13, r], [-1, 6, 6, '#FFFFFF'], [-2, 10, 10, '#FFFFFF'], [-1, 12, 12, '#FFFFFF'], [-1, 15, 17, '#B81E33'], [0, 16, 17, '#B81E33']])
     }
+    case 12: {
+      const g = '#FFD84A'
+      return `${spans([[-1, 3, 14, '#E8B21E'], [-2, 3, 3, g], [-2, 6, 6, g], [-2, 8, 9, g], [-2, 11, 11, g], [-2, 14, 14, g], [-3, 3, 3, g], [-3, 8, 9, g], [-3, 14, 14, g], [-4, 8, 9, g], [-1, 5, 5, '#E0475B'], [-1, 8, 9, '#3CCB7F'], [-1, 12, 12, '#3D7BFF']])}<g class="twinkle">${spans([[-5, 2, 2, '#FFFFFF'], [-4, 16, 16, '#FFFFFF'], [-6, 9, 9, '#FFFFFF']])}</g>`
+    }
+    case 13: {
+      const h = '#FFE27A'
+      return `<g class="halo">${spans([[-4, 6, 11, h], [-3, 4, 5, h], [-3, 12, 13, h], [-2, 6, 11, h]])}</g>`
+    }
+    case 14: {
+      const w = '#DDE3EE'
+      return `${spans([[0, 2, 15, '#9FD8FF40'], [1, 2, 15, '#9FD8FF40'], [-1, 2, 15, w], [-2, 3, 14, w], [-3, 5, 12, w], [0, 1, 1, w], [1, 1, 1, w], [0, 16, 16, w], [1, 16, 16, w], [-4, 13, 13, '#8F96AD'], [-5, 13, 13, '#8F96AD'], [-2, 5, 6, '#FFFFFF']])}<g class="twinkle">${spans([[-6, 13, 13, '#E0475B']])}</g>`
+    }
+    case 15: {
+      const y = '#FFD23F'
+      return `<g class="wiggle">${spans([[-1, 5, 13, y], [-2, 5, 13, y], [-2, 4, 4, y], [-3, 10, 13, y], [-4, 10, 13, y], [-3, 14, 15, '#FF8A00'], [-4, 12, 12, '#1E1412']])}</g>`
+    }
+    case 16:
+      return `${spans([[-1, 4, 13, '#2A2A38'], [-2, 1, 16, '#1E1E28'], [-3, 7, 10, '#1E1E28']])}<g class="wiggle">${spans([[-2, 15, 15, '#FFD166'], [-1, 15, 15, '#FFD166'], [0, 15, 16, '#FFD166']])}</g>`
+    case 17:
+      return `${spans([[-1, 6, 11, '#FFF1F7'], [-2, 7, 10, '#FFC6E0'], [-3, 7, 10, '#FFF1F7'], [-4, 8, 9, '#FFC6E0'], [-5, 8, 9, '#FFF1F7'], [-6, 8, 8, '#FFC6E0'], [-1, 3, 4, '#B79CFF'], [-1, 13, 14, '#7DE2FF']])}<g class="twinkle">${spans([[-3, 4, 4, '#7DE2FF'], [-5, 12, 12, '#B79CFF'], [-6, 5, 5, '#FFD166']])}</g>`
+    default:
+      return ''
   }
 }
 
@@ -186,12 +224,22 @@ function face(look: number, mode: GuyMode): string {
  * The pixel Claude in pixel units, its head's top row at y 0 and its feet on
  * y 10, in a mode and an outfit. `outfit` below 0 draws no hat.
  */
-export function pixelGuy(opts: { mode: GuyMode; outfit: number; look?: number; seed?: number }): string {
+export function pixelGuy(opts: {
+  mode: GuyMode
+  outfit: number
+  look?: number
+  seed?: number
+  isShiny?: boolean
+}): string {
   const { mode, outfit } = opts
   const look = opts.look ?? 0
   const seed = opts.seed ?? 0
   const delay = -((seed % 800) / 1000)
-  const skin = mode === 'fail' ? SKIN_FAIL : SKIN
+  // A shiny Claude, about one hire in fifty, is gold and glitters.
+  const skin = mode === 'fail' ? SKIN_FAIL : opts.isShiny ? SKIN_SHINY : SKIN
+  const glitter = opts.isShiny
+    ? `<g class="twinkle">${spans([[-1, -1, -1, '#FFFFFF'], [3, 18, 18, '#FFFFFF']])}</g><g class="twinkle" style="animation-delay:-.5s">${spans([[1, 17, 17, '#FFF6C8'], [4, 0, 0, '#FFF6C8']])}</g>`
+    : ''
   // The logo, row by row; its eyes are the two gaps on row 1.
   const head = spans([[0, 3, 14, skin], [1, 3, 4, skin], [1, 6, 11, skin], [1, 13, 14, skin], [2, 3, 14, skin], [3, 3, 14, skin]])
   const eyes =
@@ -226,7 +274,7 @@ export function pixelGuy(opts: { mode: GuyMode; outfit: number; look?: number; s
   const moving = mode === 'done' ? 'jump' : mode === 'fail' ? 'wobble' : ''
   return `<g class="${mode === 'run' ? 'run' : ''}"><g class="${moving}" ${style}><g class="bob" ${style}>
 ${legs}${head}${eyes}${face(look, mode)}${arms}${outfit >= 0 ? hat(outfit) : ''}${front}
-</g></g></g>${around}`
+</g></g></g>${around}${glitter}`
 }
 
 function confetti(cx: number, row: number, count: number, seed: number): string {
@@ -253,9 +301,26 @@ export const FIGURE_H = Math.round(30 * FIGURE_SCALE)
  * One crew member in its hat, standing free on the page: no card, no
  * backdrop. Changes only when its outfit, look or mode does.
  */
-export function figureSvg(mode: GuyMode, outfit: number, look: number, seed: number): string {
+export function figureSvg(mode: GuyMode, outfit: number, look: number, seed: number, isShiny = false): string {
   return `${svgOpen('-2 -18 22 30', FIGURE_W, FIGURE_H)}
-${pixelGuy({ mode, outfit, look, seed })}
+${pixelGuy({ mode, outfit, look, seed, isShiny })}
+</svg>`
+}
+
+/**
+ * A hat in the collection: worn by a Claude standing by when it is unlocked,
+ * a flat grey silhouette with a question mark while it is not.
+ */
+export function collectionSvg(outfit: number, isUnlocked: boolean): string {
+  if (isUnlocked) {
+    return figureSvg('idle', outfit, 0, outfit * 17)
+  }
+  const shape = pixelGuy({ mode: 'idle', outfit, seed: outfit * 17 })
+    .replace(/fill="#[0-9A-Fa-f]{6,8}"/g, 'fill="#5A5A66"')
+    .replace(/class="(twinkle|wiggle|prop|bit|lid|halo)"/g, '')
+  return `${svgOpen('-2 -18 22 30', FIGURE_W, FIGURE_H)}
+<g opacity=".55">${shape}</g>
+<text x="9" y="4" text-anchor="middle" font-size="9" font-weight="800" font-family="ui-sans-serif,system-ui,sans-serif" fill="#C9C9D6">?</text>
 </svg>`
 }
 

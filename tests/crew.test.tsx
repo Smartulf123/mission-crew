@@ -1,4 +1,4 @@
-import { expect, test } from 'claude-code/testing'
+import { expect, mock, test } from 'claude-code/testing'
 
 const BAND = {
   plugin: 'mission-crew',
@@ -27,6 +27,9 @@ const SIDEBAR = {
     view: {},
   },
 } as const
+
+// What a host command answers when the jingle plays.
+const RAN = { exitCode: 0, stdout: '', stderr: '', isStdoutTruncated: false, isStderrTruncated: false }
 
 const SPAWN = {
   tool_use_id: 'toolu_1',
@@ -171,5 +174,136 @@ test('with nothing to show the band stays out of the way', async ($, on) => {
   })
   const ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect(await ui.find({ type: 'Svg' })).toBeUndefined()
+  await ui.unmount()
+})
+
+test("an agent's own to-do list drives its bar and shows its step", async ($, on) => {
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('clock.now', () => ({ value: 1_000 }))
+  on('tool.call', () => ({ result: {} }))
+  mock.store(on)
+
+  await $.agent.spawn(SPAWN)
+  await $.tool.call({
+    tool: 'TodoWrite',
+    agentId: 'a1',
+    todos: [
+      { content: 'Find the files', status: 'completed', activeForm: 'Finding the files' },
+      { content: 'Read them', status: 'in_progress', activeForm: 'Reading them' },
+    ],
+  })
+
+  const ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  // 1 done and 0.4 of one under way, of 2: 70%, the list's and not a guess.
+  expect(await ui.find({ type: 'Text', text: ' 70%' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: 'Step 2/2: Read them' })).toBeDefined()
+  await ui.unmount()
+
+  // The agent's list is its own: the mission has no plan of its own yet.
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect(await band.find({ type: 'Text', text: /Read them/ })).toBeUndefined()
+  await band.unmount()
+})
+
+test("clicking an agent's name opens its transcript", async ($, on) => {
+  const viewed: unknown[] = []
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('clock.now', () => ({ value: 1_000 }))
+  on('ui.view', (_, e) => {
+    viewed.push(e)
+    return { value: {} }
+  })
+  mock.store(on)
+
+  await $.agent.spawn(SPAWN)
+  for (const surface of ['desktop', 'terminal'] as const) {
+    const ui = await $.ui.mount({ ...SIDEBAR, surface })
+    await ui.press({ key: 'watch-a1' })
+    await ui.unmount()
+  }
+  expect(viewed).toEqual([{ agentId: 'a1' }, { agentId: 'a1' }])
+})
+
+test('a failed agent earns the rubber duck, and the collection shows it', async ($, on) => {
+  const toasts: string[] = []
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('clock.now', () => ({ value: 1_000 }))
+  on('ui.toast', (_, e) => {
+    toasts.push(String(e.text))
+    return { value: undefined }
+  })
+  on('process.run', () => ({ value: RAN }))
+  on('command.register', () => ({ value: { command: 'crew' } }))
+  on('session.start', (_, e) => ({ cwd: e.cwd }))
+  on('turn.complete', () => ({ text: '' }))
+  // What an earlier session kept: three agents hired, nothing earned yet.
+  mock.store(on, { stats: { agents: 3, missions: 0, flawless: 0, failed: 0, shinies: 0, unlocked: [] } })
+  await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+
+  await $.agent.spawn(SPAWN)
+  await $.turn.complete({ agentId: 'a1', turnId: 't1', answer: '', durationMs: 5, isAborted: true, reason: 'aborted' })
+
+  expect(toasts.some(text => text.includes('rubber duck'))).toBe(true)
+
+  const ui = await $.ui.mount({ ...SIDEBAR, requestId: 'mission-crew-hats', surface: 'desktop' })
+  // The crew's one agent ended, so its mission ended too: counted, not flawless.
+  expect(await ui.find({ type: 'Text', text: '4 agents hired · 1 missions · 0 flawless · 0 shiny' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: '13 of 18 hats' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: 'rubber duck' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: 'Hire 100 agents' })).toBeDefined()
+  await ui.unmount()
+})
+
+test('a completed mission plays the jingle and says so once', async ($, on) => {
+  const played: unknown[] = []
+  const said: string[] = []
+  on('tool.call', () => ({ result: {} }))
+  on('process.run', (_, e) => {
+    played.push(e)
+    return { value: RAN }
+  })
+  on('ui.notify', (_, e) => {
+    said.push(String(e.text))
+    return { value: { isSent: false, reason: 'no-surface' } }
+  })
+  on('ui.toast', (_, e) => {
+    said.push(`toast: ${String(e.text)}`)
+    return { value: undefined }
+  })
+  mock.store(on)
+
+  const done = [{ content: 'One', status: 'completed' }]
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: done })
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: done })
+
+  expect(played).toHaveLength(1)
+  expect(JSON.stringify(played[0])).toContain('mission-complete.wav')
+  // No notification channel on the desktop: the toast says it instead.
+  expect(said).toEqual(['Mission complete!', 'toast: Mission complete!'])
+
+  // No crew, so the mission counts but is not a flawless one.
+  const ui = await $.ui.mount({ ...SIDEBAR, requestId: 'mission-crew-hats', surface: 'desktop' })
+  expect(await ui.find({ type: 'Text', text: '0 agents hired · 1 missions · 0 flawless · 0 shiny' })).toBeDefined()
+  await ui.unmount()
+})
+
+test('with sound and notifications off the party is quiet', { options: { sound: false, notifications: false } }, async ($, on) => {
+  const heard: unknown[] = []
+  on('tool.call', () => ({ result: {} }))
+  on('process.run', (_, e) => {
+    heard.push(e)
+    return { value: RAN }
+  })
+  on('ui.notify', (_, e) => {
+    heard.push(e)
+    return { value: { isSent: true, channel: 'terminal_bell' } }
+  })
+  mock.store(on)
+
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: [{ content: 'One', status: 'completed' }] })
+  expect(heard).toEqual([])
+
+  const ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect(await ui.find({ type: 'Text', text: 'MISSION COMPLETE!' })).toBeDefined()
   await ui.unmount()
 })
