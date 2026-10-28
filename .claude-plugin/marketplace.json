@@ -1,0 +1,6 @@
+{
+  "name": "mission-crew",
+  "description": "Claude Crew: a mission bar above the prompt and a pixel-art crew of subagents for Claude Code.",
+  "owner": { "name": "Smartulf123" },
+  "plugins": [{ "name": "mission-crew", "source": "./" }]
+}

@@ -1,0 +1,445 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 672 248" width="672" height="248" font-family="ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif"><svg x="29.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:0s"><g class="bob" style="animation-delay:0s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><g class="tapL" style="animation-delay:0s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:0s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="1" y="-2" width="16" height="2" fill="#24242F"/><rect  x="5" y="-4" width="8" height="2" fill="#C8364A"/><rect  x="5" y="-6" width="8" height="2" fill="#24242F"/><rect  x="5" y="-8" width="8" height="2" fill="#24242F"/><rect  x="5" y="-10" width="8" height="2" fill="#24242F"/><rect  x="6" y="-8" width="1" height="2" fill="#4A4A66"/><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:0s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-0.8s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:0s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="56" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Sir Pixel</text><text x="56" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">top hat</text><svg x="141.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.031s"><g class="bob" style="animation-delay:-0.031s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="3" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="11" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="7" y="2" width="4" height="2" fill="#0C0C10"/><g class="tapL" style="animation-delay:-0.031s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.031s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="2" y="-2" width="14" height="2" fill="#4E3CC4"/><rect  x="4" y="-4" width="10" height="2" fill="#6A55E0"/><rect  x="5" y="-6" width="8" height="2" fill="#6A55E0"/><rect  x="6" y="-8" width="6" height="2" fill="#6A55E0"/><rect  x="7" y="-10" width="4" height="2" fill="#6A55E0"/><rect  x="8" y="-12" width="3" height="2" fill="#6A55E0"/><rect  x="10" y="-14" width="2" height="2" fill="#6A55E0"/><g class="twinkle"><rect  x="7" y="-6" width="1" height="2" fill="#FFE27A"/><rect  x="9" y="-10" width="1" height="2" fill="#FFE27A"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.062s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-0.8620000000000001s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.093s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="168" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Wizard Pebble</text><text x="168" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">wizard hat</text><svg x="253.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.062s"><g class="bob" style="animation-delay:-0.062s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="6" y="4" width="6" height="2" fill="#4A2C1E"/><g class="tapL" style="animation-delay:-0.062s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.062s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="0" y="-2" width="18" height="2" fill="#7E4A24"/><rect  x="5" y="-4" width="8" height="2" fill="#5A3217"/><rect  x="5" y="-6" width="8" height="2" fill="#A0602F"/><rect  x="5" y="-8" width="3" height="2" fill="#A0602F"/><rect  x="10" y="-8" width="3" height="2" fill="#A0602F"/><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.124s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-0.924s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.186s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="280" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Sheriff Ziggy</text><text x="280" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">cowboy hat</text><svg x="365.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.093s"><g class="bob" style="animation-delay:-0.093s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="4" y="4" width="1" height="2" fill="#F2A3A0"/><rect  x="13" y="4" width="1" height="2" fill="#F2A3A0"/><g class="tapL" style="animation-delay:-0.093s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.093s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="3" y="-2" width="12" height="2" fill="#24857A"/><rect  x="3" y="-4" width="12" height="2" fill="#2F9E8F"/><rect  x="4" y="-6" width="10" height="2" fill="#2F9E8F"/><g class="wiggle"><rect  x="8" y="-8" width="2" height="2" fill="#F5EFE6"/><rect  x="8" y="-10" width="2" height="2" fill="#F5EFE6"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.186s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-0.986s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.279s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="392" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Chill Gizmo</text><text x="392" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">beanie</text><svg x="477.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.124s"><g class="bob" style="animation-delay:-0.124s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><g class="tapL" style="animation-delay:-0.124s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.124s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="4" y="-2" width="10" height="2" fill="#FFC845"/><rect  x="4" y="-4" width="1" height="2" fill="#FFC845"/><rect  x="8" y="-4" width="2" height="2" fill="#FFC845"/><rect  x="13" y="-4" width="1" height="2" fill="#FFC845"/><rect  x="4" y="-6" width="1" height="2" fill="#FFC845"/><rect  x="8" y="-6" width="2" height="2" fill="#FFC845"/><rect  x="13" y="-6" width="1" height="2" fill="#FFC845"/><rect  x="6" y="-2" width="1" height="2" fill="#E0475B"/><rect  x="11" y="-2" width="1" height="2" fill="#3D7BFF"/><g class="twinkle"><rect  x="8" y="-8" width="2" height="2" fill="#FFFFFF"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.248s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.048s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.372s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="504" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">King Mochi</text><text x="504" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">crown</text><svg x="589.5" y="4" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.155s"><g class="bob" style="animation-delay:-0.155s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="3" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="11" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="7" y="2" width="4" height="2" fill="#0C0C10"/><g class="tapL" style="animation-delay:-0.155s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.155s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="1" y="-2" width="16" height="2" fill="#E5A40F"/><rect  x="4" y="-4" width="10" height="2" fill="#FFC93C"/><rect  x="5" y="-6" width="8" height="2" fill="#FFC93C"/><rect  x="7" y="-8" width="4" height="2" fill="#FFC93C"/><rect  x="8" y="-6" width="2" height="2" fill="#FFF6D6"/><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.31s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.11s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.46499999999999997s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="616" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Foreman Tofu</text><text x="616" y="108" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">hard hat</text><svg x="29.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.186s"><g class="bob" style="animation-delay:-0.186s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="6" y="4" width="6" height="2" fill="#4A2C1E"/><g class="tapL" style="animation-delay:-0.186s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.186s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="5" y="-2" width="8" height="2" fill="#FF6FA3"/><rect  x="6" y="-4" width="6" height="2" fill="#FFD166"/><rect  x="7" y="-6" width="4" height="2" fill="#FF6FA3"/><rect  x="8" y="-8" width="2" height="2" fill="#FFD166"/><rect  x="8" y="-10" width="2" height="2" fill="#FF6FA3"/><g class="wiggle"><rect  x="8" y="-12" width="2" height="2" fill="#7DE2FF"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.372s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.1720000000000002s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.558s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="56" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Party Muffin</text><text x="56" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">party hat</text><svg x="141.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.217s"><g class="bob" style="animation-delay:-0.217s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="4" y="4" width="1" height="2" fill="#F2A3A0"/><rect  x="13" y="4" width="1" height="2" fill="#F2A3A0"/><g class="tapL" style="animation-delay:-0.217s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.217s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="4" y="-2" width="10" height="2" fill="#3D7BFF"/><rect  x="5" y="-4" width="8" height="2" fill="#3D7BFF"/><rect  x="4" y="-2" width="5" height="2" fill="#E0475B"/><rect  x="5" y="-4" width="4" height="2" fill="#E0475B"/><rect  x="14" y="-2" width="3" height="2" fill="#2A5FD6"/><rect  x="8" y="-6" width="2" height="2" fill="#666666"/><g class="prop"><rect  x="3" y="-8" width="12" height="2" fill="#B8C2D6"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.434s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.234s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.651s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="168" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Professor Biscuit</text><text x="168" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">propeller cap</text><svg x="253.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.248s"><g class="bob" style="animation-delay:-0.248s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><g class="tapL" style="animation-delay:-0.248s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.248s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="3" y="-2" width="12" height="2" fill="#7E889B"/><rect  x="4" y="-4" width="10" height="2" fill="#A7B1C2"/><rect  x="6" y="-6" width="6" height="2" fill="#A7B1C2"/><rect  x="6" y="-2" width="1" height="2" fill="#E6ECF5"/><rect  x="11" y="-2" width="1" height="2" fill="#E6ECF5"/><rect  x="1" y="-4" width="3" height="2" fill="#F3E6C8"/><rect  x="1" y="-6" width="1" height="2" fill="#F3E6C8"/><rect  x="0" y="-8" width="1" height="2" fill="#F3E6C8"/><rect  x="14" y="-4" width="3" height="2" fill="#F3E6C8"/><rect  x="16" y="-6" width="1" height="2" fill="#F3E6C8"/><rect  x="17" y="-8" width="1" height="2" fill="#F3E6C8"/><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.496s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.296s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.744s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="280" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Jarl Sprout</text><text x="280" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">viking helmet</text><svg x="365.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="jump" style="animation-delay:-0.279s"><g class="bob" style="animation-delay:-0.279s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><rect  x="3" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="11" y="2" width="4" height="2" fill="#0C0C10"/><rect  x="7" y="2" width="4" height="2" fill="#0C0C10"/><g class="wave"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="4" y="-2" width="10" height="2" fill="#E3E3EC"/><rect  x="3" y="-4" width="12" height="2" fill="#FFFFFF"/><rect  x="3" y="-6" width="12" height="2" fill="#FFFFFF"/><rect  x="3" y="-8" width="5" height="2" fill="#FFFFFF"/><rect  x="10" y="-8" width="5" height="2" fill="#FFFFFF"/><rect  x="4" y="-10" width="3" height="2" fill="#FFFFFF"/><rect  x="11" y="-10" width="3" height="2" fill="#FFFFFF"/><rect  x="8" y="-8" width="2" height="2" fill="#FFFFFF"/>
+</g></g></g><rect class="cf" style="--dx:0px;animation-delay:-1.691s" x="16" y="-13" width="1" height="2" fill="#FF6FA3"/><rect class="cf" style="--dx:0px;animation-delay:-1.435s" x="5" y="-12" width="1" height="2" fill="#FFD166"/><rect class="cf" style="--dx:-11px;animation-delay:0.333s" x="0" y="-12" width="1" height="2" fill="#7DE2FF"/><rect class="cf" style="--dx:-1px;animation-delay:-0.147s" x="8" y="-15" width="1" height="2" fill="#3CCB7F"/><rect class="cf" style="--dx:1px;animation-delay:-0.667s" x="10" y="-13" width="1" height="2" fill="#B79CFF"/><rect class="cf" style="--dx:2px;animation-delay:-0.411s" x="18" y="-12" width="1" height="2" fill="#FF6FA3"/><rect class="cf" style="--dx:0px;animation-delay:-1.179s" x="13" y="-15" width="1" height="2" fill="#FFD166"/><rect class="cf" style="--dx:1px;animation-delay:-0.923s" x="2" y="-14" width="1" height="2" fill="#7DE2FF"/><rect class="cf" style="--dx:-5px;animation-delay:0.597s" x="9" y="-11" width="1" height="2" fill="#3CCB7F"/><rect class="cf" style="--dx:-4px;animation-delay:0.853s" x="17" y="-10" width="1" height="2" fill="#B79CFF"/>
+</svg><text x="392" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Chef Bagel</text><text x="392" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">chef hat · done!</text><svg x="477.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.31s"><g class="bob" style="animation-delay:-0.31s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><rect  x="6" y="4" width="6" height="2" fill="#4A2C1E"/><g class="tapL" style="animation-delay:-0.31s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.31s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="4" y="-2" width="10" height="2" fill="#2C2C3A"/><rect  x="1" y="0" width="2" height="2" fill="#2C2C3A"/><rect  x="1" y="2" width="2" height="2" fill="#FF6FA3"/><rect  x="15" y="0" width="2" height="2" fill="#2C2C3A"/><rect  x="15" y="2" width="2" height="2" fill="#FF6FA3"/><rect  x="3" y="-2" width="1" height="2" fill="#2C2C3A"/><rect  x="14" y="-2" width="1" height="2" fill="#2C2C3A"/><g class="bit"><rect  x="0" y="-6" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-8" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-.8s"><rect  x="17" y="-6" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-8" width="1" height="2" fill="#FFD166"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.62s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-1.42s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.9299999999999999s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg><text x="504" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">DJ Nibble</text><text x="504" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">headphones</text><svg x="589.5" y="128" viewBox="-2 -18 22 30" width="53" height="72" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="wobble" style="animation-delay:-0.341s"><g class="bob" style="animation-delay:-0.341s">
+<rect  x="4" y="8" width="1" height="2" fill="#9A8C86"/><rect  x="11" y="8" width="1" height="2" fill="#9A8C86"/><rect  x="6" y="8" width="1" height="2" fill="#9A8C86"/><rect  x="13" y="8" width="1" height="2" fill="#9A8C86"/><rect  x="3" y="0" width="12" height="2" fill="#9A8C86"/><rect  x="3" y="2" width="2" height="2" fill="#9A8C86"/><rect  x="6" y="2" width="6" height="2" fill="#9A8C86"/><rect  x="13" y="2" width="2" height="2" fill="#9A8C86"/><rect  x="3" y="4" width="12" height="2" fill="#9A8C86"/><rect  x="3" y="6" width="12" height="2" fill="#9A8C86"/><rect  x="4" y="2" width="2" height="2" fill="#1E1412"/><rect  x="12" y="2" width="2" height="2" fill="#1E1412"/><rect  x="1" y="4" width="2" height="2" fill="#9A8C86"/><rect  x="15" y="4" width="2" height="2" fill="#9A8C86"/><rect  x="3" y="-2" width="12" height="2" fill="#D7263D"/><rect  x="4" y="-4" width="10" height="2" fill="#D7263D"/><rect  x="6" y="-2" width="1" height="2" fill="#FFFFFF"/><rect  x="10" y="-4" width="1" height="2" fill="#FFFFFF"/><rect  x="12" y="-2" width="1" height="2" fill="#FFFFFF"/><rect  x="15" y="-2" width="3" height="2" fill="#B81E33"/><rect  x="16" y="0" width="2" height="2" fill="#B81E33"/>
+</g></g></g><g class="twinkle"><rect  x="2" y="-4" width="1" height="2" fill="#FFD166"/><rect  x="15" y="-6" width="1" height="2" fill="#FFD166"/></g>
+</svg><text x="616" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#8B8B8B">Captain Noodle</text><text x="616" y="232" text-anchor="middle" font-size="10" fill="#8B8B8B" opacity=".8">pirate bandana · failed</text></svg>
