@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 100" width="760" height="100" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif">
+<style>
+.work{animation:work 8s step-end infinite}
+@keyframes work{0%{opacity:1}62.00%{opacity:0}100%{opacity:1}}
+.done{opacity:0;animation:done 8s step-end infinite}
+@keyframes done{0%{opacity:0}62.00%{opacity:1}100%{opacity:0}}
+.n0{opacity:0;animation:n0 8s step-end infinite}@keyframes n0{0%{opacity:0}0.00%{opacity:1}6.20%{opacity:0}}.n10{opacity:0;animation:n10 8s step-end infinite}@keyframes n10{0%{opacity:0}6.20%{opacity:1}12.40%{opacity:0}}.n20{opacity:0;animation:n20 8s step-end infinite}@keyframes n20{0%{opacity:0}12.40%{opacity:1}18.60%{opacity:0}}.n30{opacity:0;animation:n30 8s step-end infinite}@keyframes n30{0%{opacity:0}18.60%{opacity:1}24.80%{opacity:0}}.n40{opacity:0;animation:n40 8s step-end infinite}@keyframes n40{0%{opacity:0}24.80%{opacity:1}31.00%{opacity:0}}.n50{opacity:0;animation:n50 8s step-end infinite}@keyframes n50{0%{opacity:0}31.00%{opacity:1}37.20%{opacity:0}}.n60{opacity:0;animation:n60 8s step-end infinite}@keyframes n60{0%{opacity:0}37.20%{opacity:1}43.40%{opacity:0}}.n70{opacity:0;animation:n70 8s step-end infinite}@keyframes n70{0%{opacity:0}43.40%{opacity:1}49.60%{opacity:0}}.n80{opacity:0;animation:n80 8s step-end infinite}@keyframes n80{0%{opacity:0}49.60%{opacity:1}55.80%{opacity:0}}.n90{opacity:0;animation:n90 8s step-end infinite}@keyframes n90{0%{opacity:0}55.80%{opacity:1}62.00%{opacity:0}}.n100{opacity:0;animation:n100 8s step-end infinite}@keyframes n100{0%{opacity:0}62.00%{opacity:1}62.00%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.work,.n0,.n10,.n20,.n30,.n40,.n50,.n60,.n70,.n80,.n90{display:none}.done,.n100{opacity:1;animation:none}}
+</style>
+<rect x=".5" y=".5" width="759" height="99" rx="14" fill="#262626" stroke="#3A3A3A"/>
+<g><polygon points="26,66 37,66 35,75 24,75" fill="#5E5E5E"/><polygon points="43,66 54,66 52,75 41,75" fill="#5E5E5E"/><polygon points="60,66 71,66 69,75 58,75" fill="#5E5E5E"/><polygon points="77,66 88,66 86,75 75,75" fill="#5E5E5E"/><polygon points="94,66 105,66 103,75 92,75" fill="#5E5E5E"/><polygon points="111,66 122,66 120,75 109,75" fill="#5E5E5E"/><polygon points="128,66 139,66 137,75 126,75" fill="#5E5E5E"/><polygon points="145,66 156,66 154,75 143,75" fill="#5E5E5E"/><polygon points="162,66 173,66 171,75 160,75" fill="#5E5E5E"/><polygon points="179,66 190,66 188,75 177,75" fill="#5E5E5E"/><polygon points="196,66 207,66 205,75 194,75" fill="#5E5E5E"/><polygon points="213,66 224,66 222,75 211,75" fill="#5E5E5E"/><polygon points="230,66 241,66 239,75 228,75" fill="#5E5E5E"/><polygon points="247,66 258,66 256,75 245,75" fill="#5E5E5E"/><polygon points="264,66 275,66 273,75 262,75" fill="#5E5E5E"/><polygon points="281,66 292,66 290,75 279,75" fill="#5E5E5E"/><polygon points="298,66 309,66 307,75 296,75" fill="#5E5E5E"/><polygon points="315,66 326,66 324,75 313,75" fill="#5E5E5E"/><polygon points="332,66 343,66 341,75 330,75" fill="#5E5E5E"/><polygon points="349,66 360,66 358,75 347,75" fill="#5E5E5E"/><polygon points="366,66 377,66 375,75 364,75" fill="#5E5E5E"/><polygon points="383,66 394,66 392,75 381,75" fill="#5E5E5E"/><polygon points="400,66 411,66 409,75 398,75" fill="#5E5E5E"/><polygon points="417,66 428,66 426,75 415,75" fill="#5E5E5E"/><polygon points="434,66 445,66 443,75 432,75" fill="#5E5E5E"/><polygon points="451,66 462,66 460,75 449,75" fill="#5E5E5E"/><polygon points="468,66 479,66 477,75 466,75" fill="#5E5E5E"/><polygon points="485,66 496,66 494,75 483,75" fill="#5E5E5E"/><polygon points="502,66 513,66 511,75 500,75" fill="#5E5E5E"/><polygon points="519,66 530,66 528,75 517,75" fill="#5E5E5E"/><polygon points="536,66 547,66 545,75 534,75" fill="#5E5E5E"/><polygon points="553,66 564,66 562,75 551,75" fill="#5E5E5E"/><polygon points="570,66 581,66 579,75 568,75" fill="#5E5E5E"/><polygon points="587,66 598,66 596,75 585,75" fill="#5E5E5E"/><polygon points="604,66 615,66 613,75 602,75" fill="#5E5E5E"/><polygon points="621,66 632,66 630,75 619,75" fill="#5E5E5E"/><polygon points="638,66 649,66 647,75 636,75" fill="#5E5E5E"/><polygon points="655,66 666,66 664,75 653,75" fill="#5E5E5E"/><polygon points="672,66 683,66 681,75 670,75" fill="#5E5E5E"/><polygon points="689,66 700,66 698,75 687,75" fill="#5E5E5E"/></g>
+<g class="work">
+  <text x="24" y="42" font-size="17"><tspan font-weight="700" fill="#D97757">MISSION</tspan><tspan fill="#F2F2F2" font-weight="500" dx="10">Wire up the hooks</tspan></text>
+  <svg x="528" y="2" viewBox="-3 -14 24 26" width="48" height="52" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.halo{animation:halo 1.2s steps(1) infinite}
+@keyframes halo{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="" style="animation-delay:-0.005s"><g class="bob" style="animation-delay:-0.005s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="lid"><rect  x="5" y="2" width="1" height="2" fill="#D97757"/><rect  x="12" y="2" width="1" height="2" fill="#D97757"/></g><g class="tapL" style="animation-delay:-0.005s"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/></g><g class="tapR" style="animation-delay:-0.005s"><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g><rect  x="4" y="6" width="10" height="2" fill="#8F96AD"/><rect  x="4" y="8" width="10" height="2" fill="#8F96AD"/><rect  x="2" y="10" width="14" height="2" fill="#6F7690"/><rect  x="8" y="6" width="2" height="2" fill="#E6EAF5"/>
+</g></g></g><g class="bit" style="animation-delay:-0.01s"><rect  x="0" y="-2" width="1" height="2" fill="#7DE2FF"/><rect  x="1" y="-4" width="1" height="2" fill="#7DE2FF"/></g><g class="bit" style="animation-delay:-0.81s"><rect  x="17" y="-2" width="1" height="2" fill="#FFD166"/><rect  x="16" y="-4" width="1" height="2" fill="#FFD166"/></g><g class="drip" style="animation-delay:-0.015s"><rect  x="16" y="0" width="1" height="2" fill="#7DE2FF"/></g>
+</svg>
+  <text x="736" y="42" text-anchor="end" font-size="16" fill="#D97757">3 agents working ›</text>
+  <clipPath id="fillClip"><rect x="24" y="64" height="13" width="0"><animate attributeName="width" values="0;676;676" keyTimes="0;0.62;1" dur="8s" repeatCount="indefinite"/></rect></clipPath>
+  <g clip-path="url(#fillClip)"><polygon points="26,66 37,66 35,75 24,75" fill="#D97757"/><polygon points="43,66 54,66 52,75 41,75" fill="#D97757"/><polygon points="60,66 71,66 69,75 58,75" fill="#D97757"/><polygon points="77,66 88,66 86,75 75,75" fill="#D97757"/><polygon points="94,66 105,66 103,75 92,75" fill="#D97757"/><polygon points="111,66 122,66 120,75 109,75" fill="#D97757"/><polygon points="128,66 139,66 137,75 126,75" fill="#D97757"/><polygon points="145,66 156,66 154,75 143,75" fill="#D97757"/><polygon points="162,66 173,66 171,75 160,75" fill="#D97757"/><polygon points="179,66 190,66 188,75 177,75" fill="#D97757"/><polygon points="196,66 207,66 205,75 194,75" fill="#D97757"/><polygon points="213,66 224,66 222,75 211,75" fill="#D97757"/><polygon points="230,66 241,66 239,75 228,75" fill="#D97757"/><polygon points="247,66 258,66 256,75 245,75" fill="#D97757"/><polygon points="264,66 275,66 273,75 262,75" fill="#D97757"/><polygon points="281,66 292,66 290,75 279,75" fill="#D97757"/><polygon points="298,66 309,66 307,75 296,75" fill="#D97757"/><polygon points="315,66 326,66 324,75 313,75" fill="#D97757"/><polygon points="332,66 343,66 341,75 330,75" fill="#D97757"/><polygon points="349,66 360,66 358,75 347,75" fill="#D97757"/><polygon points="366,66 377,66 375,75 364,75" fill="#D97757"/><polygon points="383,66 394,66 392,75 381,75" fill="#D97757"/><polygon points="400,66 411,66 409,75 398,75" fill="#D97757"/><polygon points="417,66 428,66 426,75 415,75" fill="#D97757"/><polygon points="434,66 445,66 443,75 432,75" fill="#D97757"/><polygon points="451,66 462,66 460,75 449,75" fill="#D97757"/><polygon points="468,66 479,66 477,75 466,75" fill="#D97757"/><polygon points="485,66 496,66 494,75 483,75" fill="#D97757"/><polygon points="502,66 513,66 511,75 500,75" fill="#D97757"/><polygon points="519,66 530,66 528,75 517,75" fill="#D97757"/><polygon points="536,66 547,66 545,75 534,75" fill="#D97757"/><polygon points="553,66 564,66 562,75 551,75" fill="#D97757"/><polygon points="570,66 581,66 579,75 568,75" fill="#D97757"/><polygon points="587,66 598,66 596,75 585,75" fill="#D97757"/><polygon points="604,66 615,66 613,75 602,75" fill="#D97757"/><polygon points="621,66 632,66 630,75 619,75" fill="#D97757"/><polygon points="638,66 649,66 647,75 636,75" fill="#D97757"/><polygon points="655,66 666,66 664,75 653,75" fill="#D97757"/><polygon points="672,66 683,66 681,75 670,75" fill="#D97757"/><polygon points="689,66 700,66 698,75 687,75" fill="#D97757"/></g>
+  <text class="n0" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">0%</text><text class="n10" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">10%</text><text class="n20" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">20%</text><text class="n30" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">30%</text><text class="n40" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">40%</text><text class="n50" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">50%</text><text class="n60" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">60%</text><text class="n70" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">70%</text><text class="n80" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">80%</text><text class="n90" x="712" y="75" font-size="15" font-weight="700" fill="#D97757">90%</text>
+</g>
+<g class="done">
+  <text x="24" y="42" font-size="17" font-weight="700" fill="#4CC26A">MISSION COMPLETE!</text>
+  <svg x="556" y="2" viewBox="-3 -14 24 26" width="48" height="52" shape-rendering="crispEdges" ><style>
+.bob{animation:bob .8s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.run .bob{animation-duration:.24s}
+.tapL{animation:tap .3s steps(1) infinite}
+.tapR{animation:tap .3s steps(1) infinite;animation-delay:-.15s}
+@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.legA{animation:leg .24s steps(1) infinite}
+.legB{animation:leg .24s steps(1) infinite;animation-delay:-.12s}
+@keyframes leg{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.lid{opacity:0;animation:lid 3.4s step-end infinite}
+@keyframes lid{0%{opacity:0}94%{opacity:1}98%{opacity:0}}
+.jump{animation:jump .9s steps(1) infinite}
+@keyframes jump{0%{transform:translateY(0)}20%{transform:translateY(-4px)}40%{transform:translateY(-6px)}60%{transform:translateY(-4px)}80%{transform:translateY(0)}}
+.wave{animation:wave .45s steps(1) infinite}
+@keyframes wave{0%{transform:translateY(-2px)}50%{transform:translateY(-4px)}}
+.wobble{animation:wobble 1s steps(1) infinite}
+@keyframes wobble{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.bit{opacity:0;animation:bit 1.6s steps(4) infinite}
+@keyframes bit{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.drip{opacity:0;animation:drip 2.8s steps(1) infinite}
+@keyframes drip{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(2px)}90%{opacity:.6;transform:translateY(4px)}100%{opacity:0}}
+.cf{animation:cf 1.8s steps(6) infinite}
+@keyframes cf{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0px),12px)}}
+.twinkle{animation:twinkle 1s steps(1) infinite}
+@keyframes twinkle{0%{opacity:1}50%{opacity:.25}}
+.prop{transform-box:fill-box;transform-origin:center;animation:prop .3s steps(3) infinite}
+@keyframes prop{0%{transform:scaleX(1)}50%{transform:scaleX(.2)}100%{transform:scaleX(1)}}
+.wiggle{animation:wiggle .5s steps(1) infinite}
+@keyframes wiggle{0%{transform:translateX(0)}50%{transform:translateX(1px)}}
+.halo{animation:halo 1.2s steps(1) infinite}
+@keyframes halo{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+.trail{animation:trail .6s steps(3) infinite}
+@keyframes trail{0%{opacity:.9;transform:translateX(0)}100%{opacity:0;transform:translateX(-6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<g class=""><g class="jump" style="animation-delay:-0.005s"><g class="bob" style="animation-delay:-0.005s">
+<rect  x="4" y="8" width="1" height="2" fill="#D97757"/><rect  x="11" y="8" width="1" height="2" fill="#D97757"/><rect  x="6" y="8" width="1" height="2" fill="#D97757"/><rect  x="13" y="8" width="1" height="2" fill="#D97757"/><rect  x="3" y="0" width="12" height="2" fill="#D97757"/><rect  x="3" y="2" width="2" height="2" fill="#D97757"/><rect  x="6" y="2" width="6" height="2" fill="#D97757"/><rect  x="13" y="2" width="2" height="2" fill="#D97757"/><rect  x="3" y="4" width="12" height="2" fill="#D97757"/><rect  x="3" y="6" width="12" height="2" fill="#D97757"/><rect  x="5" y="2" width="1" height="2" fill="#1E1412"/><rect  x="12" y="2" width="1" height="2" fill="#1E1412"/><g class="wave"><rect  x="1" y="4" width="2" height="2" fill="#D97757"/><rect  x="15" y="4" width="2" height="2" fill="#D97757"/></g>
+</g></g></g><rect class="cf" style="--dx:-6px;animation-delay:0.015s" x="9" y="-10" width="1" height="2" fill="#FF6FA3"/><rect class="cf" style="--dx:-7px;animation-delay:1.559s" x="1" y="-11" width="1" height="2" fill="#FFD166"/><rect class="cf" style="--dx:-5px;animation-delay:0.527s" x="6" y="-12" width="1" height="2" fill="#7DE2FF"/><rect class="cf" style="--dx:-6px;animation-delay:0.271s" x="17" y="-9" width="1" height="2" fill="#3CCB7F"/><rect class="cf" style="--dx:-5px;animation-delay:1.039s" x="3" y="-9" width="1" height="2" fill="#B79CFF"/><rect class="cf" style="--dx:-5px;animation-delay:0.783s" x="14" y="-11" width="1" height="2" fill="#FF6FA3"/><rect class="cf" style="--dx:-4px;animation-delay:1.551s" x="0" y="-11" width="1" height="2" fill="#FFD166"/><rect class="cf" style="--dx:-4px;animation-delay:1.295s" x="11" y="-12" width="1" height="2" fill="#7DE2FF"/><rect class="cf" style="--dx:-12px;animation-delay:0.263s" x="16" y="-9" width="1" height="2" fill="#3CCB7F"/><rect class="cf" style="--dx:-12px;animation-delay:0.007s" x="8" y="-10" width="1" height="2" fill="#B79CFF"/>
+</svg>
+  <text x="736" y="42" text-anchor="end" font-size="16" fill="#4CC26A">4 agents done ›</text>
+  <g><polygon points="26,66 37,66 35,75 24,75" fill="#4CC26A"/><polygon points="43,66 54,66 52,75 41,75" fill="#4CC26A"/><polygon points="60,66 71,66 69,75 58,75" fill="#4CC26A"/><polygon points="77,66 88,66 86,75 75,75" fill="#4CC26A"/><polygon points="94,66 105,66 103,75 92,75" fill="#4CC26A"/><polygon points="111,66 122,66 120,75 109,75" fill="#4CC26A"/><polygon points="128,66 139,66 137,75 126,75" fill="#4CC26A"/><polygon points="145,66 156,66 154,75 143,75" fill="#4CC26A"/><polygon points="162,66 173,66 171,75 160,75" fill="#4CC26A"/><polygon points="179,66 190,66 188,75 177,75" fill="#4CC26A"/><polygon points="196,66 207,66 205,75 194,75" fill="#4CC26A"/><polygon points="213,66 224,66 222,75 211,75" fill="#4CC26A"/><polygon points="230,66 241,66 239,75 228,75" fill="#4CC26A"/><polygon points="247,66 258,66 256,75 245,75" fill="#4CC26A"/><polygon points="264,66 275,66 273,75 262,75" fill="#4CC26A"/><polygon points="281,66 292,66 290,75 279,75" fill="#4CC26A"/><polygon points="298,66 309,66 307,75 296,75" fill="#4CC26A"/><polygon points="315,66 326,66 324,75 313,75" fill="#4CC26A"/><polygon points="332,66 343,66 341,75 330,75" fill="#4CC26A"/><polygon points="349,66 360,66 358,75 347,75" fill="#4CC26A"/><polygon points="366,66 377,66 375,75 364,75" fill="#4CC26A"/><polygon points="383,66 394,66 392,75 381,75" fill="#4CC26A"/><polygon points="400,66 411,66 409,75 398,75" fill="#4CC26A"/><polygon points="417,66 428,66 426,75 415,75" fill="#4CC26A"/><polygon points="434,66 445,66 443,75 432,75" fill="#4CC26A"/><polygon points="451,66 462,66 460,75 449,75" fill="#4CC26A"/><polygon points="468,66 479,66 477,75 466,75" fill="#4CC26A"/><polygon points="485,66 496,66 494,75 483,75" fill="#4CC26A"/><polygon points="502,66 513,66 511,75 500,75" fill="#4CC26A"/><polygon points="519,66 530,66 528,75 517,75" fill="#4CC26A"/><polygon points="536,66 547,66 545,75 534,75" fill="#4CC26A"/><polygon points="553,66 564,66 562,75 551,75" fill="#4CC26A"/><polygon points="570,66 581,66 579,75 568,75" fill="#4CC26A"/><polygon points="587,66 598,66 596,75 585,75" fill="#4CC26A"/><polygon points="604,66 615,66 613,75 602,75" fill="#4CC26A"/><polygon points="621,66 632,66 630,75 619,75" fill="#4CC26A"/><polygon points="638,66 649,66 647,75 636,75" fill="#4CC26A"/><polygon points="655,66 666,66 664,75 653,75" fill="#4CC26A"/><polygon points="672,66 683,66 681,75 670,75" fill="#4CC26A"/><polygon points="689,66 700,66 698,75 687,75" fill="#4CC26A"/></g>
+  <text x="712" y="75" font-size="15" font-weight="700" fill="#4CC26A">100%</text>
+</g>
+</svg>

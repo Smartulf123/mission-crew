@@ -2,7 +2,7 @@
 
 **See what Claude is doing while it works.** A [Claude Code](https://claude.com/claude-code) mod that puts a mission bar above your prompt while Claude works through a plan, and a pixel-art crew in a sidebar, one Claude in a silly hat for every subagent it sends out.
 
-![The mission band above the prompt, at 100%: MISSION COMPLETE!](assets/band.png)
+![The mission band above the prompt: the bar fills while Claude types at his laptop, then MISSION COMPLETE! and he jumps in confetti](assets/band.svg)
 
 ![The crew: twelve pixel Claudes in hats, typing at their laptops](assets/crew.svg)
 
