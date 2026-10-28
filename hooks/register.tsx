@@ -1,7 +1,7 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, Timer } from 'claude-code'
 
-import type { CrewAgent, CrewPlan, CrewStats, CrewStep, CrewStepStatus } from '../types'
+import type { CrewAgent, CrewMission, CrewPlan, CrewStats, CrewStep, CrewStepStatus } from '../types'
 import {
   collectionSvg,
   crewName,
@@ -19,6 +19,7 @@ import {
 
 const EMPTY_PLAN: CrewPlan = { steps: [], pct: 0, prevPct: 0 }
 const EMPTY_STATS: CrewStats = { agents: 0, missions: 0, flawless: 0, failed: 0, shinies: 0, unlocked: [] }
+const EMPTY_MISSION: CrewMission = { startedAt: 0, endedAt: 0, tokens: 0 }
 
 // Change a tag when that value's fields change: it declines what an earlier
 // version stored, which outlives a reload.
@@ -26,8 +27,14 @@ const plan = atom({ plugin: 'mission-crew', key: 'plan' } as const, EMPTY_PLAN, 
   shape: 'plan-1',
 })
 const agents = atom({ plugin: 'mission-crew', key: 'agents' } as const, [] as CrewAgent[], {
-  shape: 'agents-2',
+  shape: 'agents-3',
 })
+const mission = atom({ plugin: 'mission-crew', key: 'mission' } as const, EMPTY_MISSION, {
+  shape: 'mission-1',
+})
+const flash = atom({ plugin: 'mission-crew', key: 'flash' } as const, null)
+// The time the band and sidebar draw by, ticked each second while work runs.
+const now = atom({ plugin: 'mission-crew', key: 'now' } as const, 0)
 const stats = atom({ plugin: 'mission-crew', key: 'stats' } as const, EMPTY_STATS, {
   shape: 'stats-1',
 })
@@ -158,6 +165,9 @@ async function setSteps($: EngineInterface, change: (steps: CrewStep[]) => CrewS
     const steps = change(old.steps)
     return { steps, prevPct: old.pct, pct: planPct(steps) }
   })
+  if ((await read($, plan)).steps.length > 0) {
+    await startClock($)
+  }
   await celebrateIfDone($)
 }
 
@@ -219,8 +229,85 @@ function agentPct(tools: number, steps: CrewStep[]): number {
 }
 
 function elapsed(ms: number): string {
-  const s = Math.max(1, Math.round(ms / 1000))
-  return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`
+  const s = Math.max(0, Math.round(ms / 1000))
+  if (s < 60) {
+    return `${s}s`
+  }
+  const m = Math.floor(s / 60)
+  if (m < 60) {
+    return `${m}m ${String(s % 60).padStart(2, '0')}s`
+  }
+  return `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`
+}
+
+function tokenCount(n: number): string {
+  if (n < 1000) {
+    return `${n}`
+  }
+  return n < 1_000_000 ? `${(n / 1000).toFixed(1)}k` : `${(n / 1_000_000).toFixed(2)}M`
+}
+
+/** How long something has run: to its end, or to now while it runs. */
+function runTime(startedAt: number, endedAt: number, at: number): string {
+  return startedAt > 0 ? elapsed((endedAt > 0 ? endedAt : at) - startedAt) : ''
+}
+
+// ---------------------------------------------------------------- clock
+
+// The module's own variables start over on a reload, as its timers do.
+let ticker: Timer | undefined
+
+/** Ticks `now` each second while a mission's clock runs; stops once it does not. */
+async function keepTime($: EngineInterface): Promise<void> {
+  const at = await $.clock.now()
+  await update($, now, () => at)
+  if (ticker !== undefined) {
+    return
+  }
+  ticker = $.clock.every(1000, () => {
+    void tick($)
+  })
+}
+
+async function tick($: EngineInterface): Promise<void> {
+  const at = await $.clock.now()
+  await update($, now, () => at)
+  const { startedAt, endedAt } = await read($, mission)
+  if (startedAt === 0 || endedAt > 0) {
+    ticker?.cancel()
+    ticker = undefined
+  }
+}
+
+/** Starts the mission's clock at its first step or hire. */
+async function startClock($: EngineInterface): Promise<void> {
+  const at = await $.clock.now()
+  await update($, mission, old => (old.startedAt > 0 && old.endedAt === 0 ? old : { startedAt: at, endedAt: 0, tokens: old.endedAt > 0 ? 0 : old.tokens }))
+  await keepTime($)
+}
+
+/**
+ * Adds a model request's tokens to its crew member and to the mission: the
+ * new input and the output, cache re-reads left out (every request re-reads
+ * the whole conversation, which would swamp the count).
+ */
+async function addTokens($: EngineInterface, agentId: string | undefined, count: number): Promise<void> {
+  if (count <= 0) {
+    return
+  }
+  if (agentId !== undefined) {
+    await update($, agents, list => list.map(one => (one.id === agentId ? { ...one, tokens: one.tokens + count } : one)))
+  }
+  await update($, mission, old => (old.startedAt > 0 && old.endedAt === 0 ? { ...old, tokens: old.tokens + count } : old))
+}
+
+/** Shows a line in the band for six seconds in place of the step. */
+async function flashLine($: EngineInterface, text: string, tone: 'success' | 'error'): Promise<void> {
+  const until = (await $.clock.now()) + 6000
+  await update($, flash, () => ({ text, tone, until }))
+  $.clock.after(6000, () => {
+    void update($, flash, old => (old !== null && old.until === until ? null : old))
+  })
 }
 
 function isDemoAgent(id: string): boolean {
@@ -271,9 +358,12 @@ async function addAgent(
       isShiny,
       steps: [],
       startedAt,
+      endedAt: 0,
+      tokens: 0,
     }
     return [...list, agent].slice(-24)
   })
+  await startClock($)
   if (!isDemoAgent(id)) {
     await changeStats($, s => ({ ...s, agents: s.agents + 1, shinies: s.shinies + (isShiny ? 1 : 0) }))
   }
@@ -302,7 +392,7 @@ async function agentPlanned($: EngineInterface, id: string, tool: string, input:
 }
 
 async function agentEnded($: EngineInterface, id: string, isFailed: boolean): Promise<void> {
-  const now = await $.clock.now()
+  const at = await $.clock.now()
   const was = (await read($, agents)).find(one => one.id === id)
   if (was === undefined || was.status !== 'working') {
     return
@@ -315,13 +405,20 @@ async function agentEnded($: EngineInterface, id: string, isFailed: boolean): Pr
             status: isFailed ? 'failed' : 'done',
             prevPct: one.pct,
             pct: isFailed ? one.pct : 100,
+            endedAt: at,
             steps: isFailed ? one.steps : one.steps.map(step => ({ ...step, status: 'completed' })),
             activity: isFailed
-              ? `✗ Stopped after ${elapsed(now - one.startedAt)}`
-              : `✓ Done in ${elapsed(now - one.startedAt)}`,
+              ? `✗ Stopped after ${elapsed(at - one.startedAt)}`
+              : `✓ Done in ${elapsed(at - one.startedAt)}`,
           }
         : one,
     ),
+  )
+  // The band says so for a moment, in place of the step.
+  await flashLine(
+    $,
+    isFailed ? `✗ ${was.name} stopped: ${was.title}` : `✓ ${was.name} finished: ${was.title}`,
+    isFailed ? 'error' : 'success',
   )
   if (isFailed && !isDemoAgent(id)) {
     await changeStats($, s => ({ ...s, failed: s.failed + 1 }))
@@ -432,6 +529,9 @@ async function celebrateIfDone($: EngineInterface): Promise<void> {
   if (!m.isComplete) {
     if (wasCelebrated) {
       await update($, isCelebrated, () => false)
+      // Work again after the party: the clock runs on from where it stopped.
+      await update($, mission, old => ({ ...old, endedAt: 0 }))
+      await keepTime($)
     }
     return
   }
@@ -439,6 +539,8 @@ async function celebrateIfDone($: EngineInterface): Promise<void> {
     return
   }
   await update($, isCelebrated, () => true)
+  const at = await $.clock.now()
+  await update($, mission, old => (old.startedAt > 0 ? { ...old, endedAt: at } : old))
   void playSound($, 'sounds/mission-complete.wav')
   void announce($, m.crew)
   if (demo === undefined) {
@@ -501,6 +603,8 @@ async function clearMission($: EngineInterface): Promise<void> {
   await update($, plan, () => EMPTY_PLAN)
   await update($, isBusy, () => false)
   await update($, isCelebrated, () => false)
+  await update($, mission, () => EMPTY_MISSION)
+  await update($, flash, () => null)
 }
 
 async function startDemo($: EngineInterface): Promise<void> {
@@ -530,6 +634,8 @@ async function demoTick($: EngineInterface, tick: number): Promise<void> {
     } else if (tick > member.at && tick < member.endAt) {
       const line = DEMO_ACTIVITY[(tick * 7 + hash(member.id)) % DEMO_ACTIVITY.length] ?? 'Thinking'
       await agentWorked($, member.id, member.isFailed && tick > member.endAt - 4 ? 'Lost in node_modules' : line)
+      // Made-up requests, so the meter has something to count.
+      await addTokens($, member.id, 900 + ((tick * 7919 + hash(member.id)) % 2600))
       if (member.plan !== undefined && (tick - member.at) % 6 === 0) {
         await agentPlanned($, member.id, 'mcp__ccd_turn__update_plan', { advance: true }, undefined)
       }
@@ -558,6 +664,11 @@ export const register: Register = (on, options) => {
       argumentHint: '[demo|hats|clear|hide]',
     })
     await loadStats($)
+    // A reload drops the ticker; a mission still running gets its clock back.
+    const { startedAt, endedAt } = await read($, mission)
+    if (startedAt > 0 && endedAt === 0) {
+      await keepTime($)
+    }
     return next(e)
   })
 
@@ -593,6 +704,9 @@ export const register: Register = (on, options) => {
         await update($, plan, old =>
           old.steps.length > 0 && old.steps.every(step => step.status === 'completed') ? EMPTY_PLAN : old,
         )
+        if ((await missionOf($)).isEmpty) {
+          await update($, mission, () => EMPTY_MISSION)
+        }
         await celebrateIfDone($)
       }
       await update($, isBusy, () => true)
@@ -661,6 +775,18 @@ export const register: Register = (on, options) => {
     return ran
   }).catch(($, e, next) => next(e))
 
+  // The meter: every model request's tokens, the main loop's and each crew
+  // member's, counted as the response arrives. The stream passes through as is.
+  on('turn.step', async function* ($, e, next) {
+    const result = yield* next(e)
+    const usage = result.usage
+    if (usage !== null) {
+      const count = usage.input_tokens + usage.output_tokens + (usage.cache_creation_input_tokens ?? 0)
+      void addTokens($, e.agentId, count).catch(() => undefined)
+    }
+    return result
+  })
+
   // The band above the prompt: the mission bar, the step and a count of the
   // crew that opens the sidebar. Only text and box sizes change as the work
   // goes on; each picture's markup stays the same until its mode does, so no
@@ -676,7 +802,14 @@ export const register: Register = (on, options) => {
       m.working > 0
         ? `${m.working} ${m.working === 1 ? 'agent' : 'agents'} working`
         : `${m.crew} ${m.crew === 1 ? 'agent' : 'agents'} done`
-    const room = Math.max(10, e.props.bodyColumns - 52)
+    const room = Math.max(10, e.props.bodyColumns - 62)
+    // How long the mission has run (frozen once it is done), and a crew
+    // member's news, which stands in for the step for a few seconds.
+    const at = await read($, now)
+    const clock = runTime(m.startedAt, m.endedAt, at)
+    const clockText = clock ? `   ${m.isComplete ? 'in ' : ''}${clock}` : ''
+    const news = await read($, flash)
+    const shown = news !== null && news.until > at ? news : null
 
     if (e.surface === 'terminal') {
       const { Box, Button, Text } = $.ui.resolve(e)
@@ -684,10 +817,15 @@ export const register: Register = (on, options) => {
       return (
         <Box flexDirection="column">
           <Box flexDirection="row" justifyContent="space-between">
-            <Text>
-              <Text bold color={tone}>{m.isComplete ? 'MISSION COMPLETE!' : 'MISSION'}</Text>
-              {m.isComplete ? '' : ` ${fit(m.headline, room)}`}
-            </Text>
+            {shown !== null ? (
+              <Text color={shown.tone}>{fit(shown.text, room + 8)}</Text>
+            ) : (
+              <Text>
+                <Text bold color={tone}>{m.isComplete ? 'MISSION COMPLETE!' : 'MISSION'}</Text>
+                {m.isComplete ? '' : ` ${fit(m.headline, room)}`}
+                <Text dimColor>{clockText}</Text>
+              </Text>
+            )}
             {m.crew > 0 ? (
               <Button key="crew-button" plain onPress={() => openCrew($)}>
                 {crewLabel} ›
@@ -712,12 +850,21 @@ export const register: Register = (on, options) => {
     return (
       <Box flexDirection="column">
         <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text>
-            <Text weight="bold" color={tone}>
-              {m.isComplete ? 'MISSION COMPLETE!' : 'MISSION'}
+          {shown !== null ? (
+            <Text weight="semibold" color={shown.tone}>
+              {fit(shown.text, room + 8)}
             </Text>
-            <Text weight="medium">{m.isComplete ? '' : `  ${fit(m.headline, room)}`}</Text>
-          </Text>
+          ) : (
+            <Text>
+              <Text weight="bold" color={tone}>
+                {m.isComplete ? 'MISSION COMPLETE!' : 'MISSION'}
+              </Text>
+              <Text weight="medium">{m.isComplete ? '' : `  ${fit(m.headline, room)}`}</Text>
+              <Text dimColor size="footnote">
+                {clockText}
+              </Text>
+            </Text>
+          )}
           <Box key="crew" flexDirection="row" alignItems="center" columnGap={1} flexShrink={0}>
             <Box key="worker" flexShrink={0}>
               <Svg
@@ -766,14 +913,23 @@ export const register: Register = (on, options) => {
         return ''
       }
       const done = one.steps.filter(step => step.status === 'completed').length
-      const now = one.steps.find(step => step.status === 'in_progress') ?? one.steps.find(step => step.status === 'pending')
-      return now === undefined ? `All ${one.steps.length} steps done` : `Step ${done + 1}/${one.steps.length}: ${now.text}`
+      const current = one.steps.find(step => step.status === 'in_progress') ?? one.steps.find(step => step.status === 'pending')
+      return current === undefined ? `All ${one.steps.length} steps done` : `Step ${done + 1}/${one.steps.length}: ${current.text}`
     }
+    // Time and tokens: the mission's at the top, each crew member's by its bar.
+    const at = await read($, now)
+    const run = await read($, mission)
+    const missionMeter = [runTime(run.startedAt, run.endedAt, at), run.tokens > 0 ? `${tokenCount(run.tokens)} tokens` : '']
+      .filter(Boolean)
+      .join(' · ')
+    const meter = (one: CrewAgent) =>
+      [runTime(one.startedAt, one.endedAt, at), one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : ''].filter(Boolean).join(' · ')
 
     if (e.surface === 'terminal') {
       const { Box, Button, Text } = $.ui.resolve(e)
       return (
         <Box flexDirection="column">
+          {missionMeter ? <Text bold>{`Mission · ${missionMeter}`}</Text> : null}
           <Text dimColor>{crew.length === 0 ? 'No agents yet.' : `${working} working · ${crew.length - working} finished`}</Text>
           {crew.map(one => (
             <Box key={`crew-${one.id}`} flexDirection="column" marginTop={1}>
@@ -781,8 +937,11 @@ export const register: Register = (on, options) => {
                 {`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.isShiny ? '★ ' : ''}${one.name} (${one.kind}) ›`}
               </Button>
               <Text>{fit(one.title, room)}</Text>
-              <Text color={tone(one)}>
-                {textBar(one.pct, 12)} {one.pct}%
+              <Text>
+                <Text color={tone(one)}>
+                  {textBar(one.pct, 12)} {one.pct}%
+                </Text>
+                <Text dimColor>{meter(one) ? `  ${meter(one)}` : ''}</Text>
               </Text>
               {ownStep(one) ? <Text>{fit(ownStep(one), room)}</Text> : null}
               <Text dimColor>{fit(one.activity, room)}</Text>
@@ -804,6 +963,14 @@ export const register: Register = (on, options) => {
     const { Box, Button, Svg, Text } = $.ui.resolve(e)
     return (
       <Box flexDirection="column" rowGap={1}>
+        {missionMeter ? (
+          <Text>
+            <Text weight="bold" color="claude">
+              MISSION
+            </Text>
+            <Text weight="medium">{`  ${missionMeter}`}</Text>
+          </Text>
+        ) : null}
         <Text size="caption" weight="bold" dimColor>
           {crew.length === 0 ? 'THE CREW' : `THE CREW · ${working} WORKING · ${crew.length - working} FINISHED`}
         </Text>
@@ -840,6 +1007,7 @@ export const register: Register = (on, options) => {
                 <Text color={tone(one)}>{splitBar(one.pct, 12)[0]}</Text>
                 <Text dimColor>{splitBar(one.pct, 12)[1]}</Text>
                 <Text color={tone(one)}>{` ${one.pct}%`}</Text>
+                <Text dimColor>{meter(one) ? `   ${meter(one)}` : ''}</Text>
               </Text>
               {ownStep(one) ? (
                 <Text size="footnote" color="claude">
@@ -946,6 +1114,8 @@ async function missionOf($: EngineInterface) {
         : Math.round(crew.reduce((sum, one) => sum + (one.status === 'failed' ? 100 : one.pct), 0) / crew.length)
   return {
     isEmpty: steps.length === 0 && crew.length === 0,
+    startedAt: (await read($, mission)).startedAt,
+    endedAt: (await read($, mission)).endedAt,
     isBusy: await read($, isBusy),
     isComplete: pct >= 100 && working === 0,
     pct,

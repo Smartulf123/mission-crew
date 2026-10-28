@@ -271,6 +271,7 @@ test('a completed mission plays the jingle and says so once', async ($, on) => {
     return { value: undefined }
   })
   mock.store(on)
+  mock.clock(on, { now: 1_000_000 })
 
   const done = [{ content: 'One', status: 'completed' }]
   await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: done })
@@ -299,6 +300,7 @@ test('with sound and notifications off the party is quiet', { options: { sound: 
     return { value: { isSent: true, channel: 'terminal_bell' } }
   })
   mock.store(on)
+  mock.clock(on, { now: 1_000_000 })
 
   await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: [{ content: 'One', status: 'completed' }] })
   expect(heard).toEqual([])
@@ -327,5 +329,82 @@ test("the band's Claude keeps his spot when working turns to done", async ($, on
   expect((await ui.find({ key: 'crew-button' }))?.text).toContain('1 agent done')
   // The label's slot is one width either way, so nothing beside it moves.
   expect((await ui.find({ key: 'crew-label' }))?.props.width).toBe(working?.props.width)
+  await ui.unmount()
+})
+
+test("the band's clock runs while the mission does, and stops when it's done", async ($, on) => {
+  on('tool.call', () => ({ result: {} }))
+  on('process.run', () => ({ value: RAN }))
+  on('ui.notify', () => ({ value: { isSent: true, channel: 'terminal_bell' } }))
+  mock.store(on)
+  const clock = mock.clock(on, { now: 1_000_000 })
+
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: [{ content: 'Build it', status: 'in_progress' }] })
+  await clock.advance(75_000)
+  let ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect(await ui.find({ type: 'Text', text: '   1m 15s' })).toBeDefined()
+  await ui.unmount()
+
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: [{ content: 'Build it', status: 'completed' }] })
+  await clock.advance(60_000)
+  ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  // Frozen at the time it took, however long the band stays up after.
+  expect(await ui.find({ type: 'Text', text: '   in 1m 15s' })).toBeDefined()
+  await ui.unmount()
+})
+
+test('a finished agent gets a line in the band for a few seconds', async ($, on) => {
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('agent.list', () => ({ value: [] }))
+  on('turn.complete', () => ({ text: '' }))
+  on('process.run', () => ({ value: RAN }))
+  on('ui.notify', () => ({ value: { isSent: true, channel: 'terminal_bell' } }))
+  mock.store(on)
+  const clock = mock.clock(on, { now: 1_000_000 })
+
+  await $.agent.spawn(SPAWN)
+  await $.turn.complete({ agentId: 'a1', turnId: 't1', answer: '', durationMs: 5, isAborted: false, reason: 'answer' })
+  let ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  const name = (await ui.find({ type: 'Text', text: /finished: Map the codebase/ }))?.text
+  expect(name).toMatch(/^✓ .+ finished: Map the codebase$/)
+  await ui.unmount()
+
+  await clock.advance(7_000)
+  ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect(await ui.find({ type: 'Text', text: /finished/ })).toBeUndefined()
+  expect(await ui.find({ type: 'Text', text: 'MISSION COMPLETE!' })).toBeDefined()
+  await ui.unmount()
+})
+
+test("the meter counts each agent's tokens and the mission's, cache re-reads left out", async ($, on) => {
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('turn.step', async function* () {
+    return {
+      turnId: 't1',
+      index: 0,
+      answer: '',
+      toolUses: [],
+      stopReason: 'end_turn',
+      usage: {
+        model: 'test',
+        input_tokens: 1200,
+        output_tokens: 300,
+        cache_creation_input_tokens: 500,
+        cache_read_input_tokens: 90_000,
+      },
+    }
+  })
+  mock.store(on)
+  mock.clock(on, { now: 1_000_000 })
+
+  await $.agent.spawn(SPAWN)
+  for await (const _ of $.turn.step({ turnId: 't1', index: 0, model: 'test', messageCount: 1, agentId: 'a1' })) {
+    // The stream passes through untouched.
+  }
+
+  const ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  // 1200 in + 300 out + 500 newly cached = 2.0k; the 90k re-read is not counted.
+  expect(await ui.find({ type: 'Text', text: '  0s · 2.0k tokens' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: '   0s · 2.0k tokens' })).toBeDefined()
   await ui.unmount()
 })

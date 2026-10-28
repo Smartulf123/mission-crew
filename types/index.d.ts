@@ -25,7 +25,17 @@ export type CrewAgent = {
   isShiny: boolean
   steps: CrewStep[]
   startedAt: number
+  /** When it finished or stopped; 0 while it works. */
+  endedAt: number
+  /** New input and output tokens its requests used (cache re-reads left out). */
+  tokens: number
 }
+
+/** The mission's clock and meter; 0 for a time not reached yet. */
+export type CrewMission = { startedAt: number; endedAt: number; tokens: number }
+
+/** A line the band shows for a few seconds in place of the step. */
+export type CrewFlash = { text: string; tone: 'success' | 'error'; until: number }
 
 /** The crew's record across every session, kept in the plugin's store. */
 export type CrewStats = {
@@ -43,6 +53,9 @@ declare module 'claude-code' {
       plan: Shaped<CrewPlan>
       agents: Shaped<CrewAgent[]>
       stats: Shaped<CrewStats>
+      mission: Shaped<CrewMission>
+      flash: CrewFlash | null
+      now: number
       isBusy: boolean
       isHidden: boolean
       isCelebrated: boolean

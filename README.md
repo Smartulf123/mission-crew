@@ -2,6 +2,8 @@
 
 **See what Claude is doing while it works.** A [Claude Code](https://claude.com/claude-code) mod that puts a mission bar above your prompt while Claude works through a plan, and a pixel-art crew in a sidebar, one Claude in a silly hat for every subagent it sends out.
 
+> **Made for the Claude desktop app.** That's where the pixel crew animates. In a plain terminal the mod still works, as a simpler text version of the same band and sidebar.
+
 ![The mission band above the prompt: the bar fills while Claude types at his laptop, then MISSION COMPLETE! and he jumps in confetti](assets/band.svg)
 
 ![The crew: twelve pixel Claudes in hats, typing at their laptops](assets/crew.svg)
@@ -10,7 +12,8 @@
 
 **The mission band**, right above the prompt:
 
-- The step Claude is on and a `▰▰▰▰▰▱▱▱` bar with the plan's progress.
+- The step Claude is on, how long the mission has run, and a `▰▰▰▰▰▱▱▱` bar with the plan's progress.
+- When an agent finishes, a line takes the step's place for a few seconds: `✓ Sheriff Ziggy finished: Map the codebase`.
 - A tiny pixel Claude typing away at his laptop while the work runs, who jumps in confetti when the mission is complete.
 - A count of the subagents at work. Click **N agents working ›** to open the crew.
 
@@ -18,6 +21,7 @@
 
 - Every subagent as a pixel Claude with its own outfit and a name to match: Sir Pixel in a top hat, Wizard Pebble, Sheriff Ziggy, King Mochi, Professor Biscuit with a spinning propeller cap, Captain Noodle in a pirate bandana, and more (12 hats to start, plus sunglasses, mustaches and rosy cheeks).
 - Each one's task, its progress bar and what it's doing right now (`Reading main.ts`, `Searching "refresh"`, `Running npm test`…).
+- **Time and tokens:** how long each agent has worked and how many tokens it has used, counted live, with the mission's totals at the top.
 - **Real progress:** when an agent keeps its own to-do list, its bar follows that list and shows its current step ("Step 2/3: Write the tests").
 - **Click a name to watch that agent work:** the main view switches to its live transcript.
 - They type while they work, celebrate when they finish, and go grey and dizzy if they fail.
@@ -81,6 +85,7 @@ Claude Crew is a hooks module for Claude Code's plugin API, with no setup:
 
 - **The plan** comes from Claude's own to-do tools: `TodoWrite`, `TaskCreate`/`TaskUpdate`, and the desktop app's task list.
 - **The crew** comes from each subagent's spawn, every tool call it makes, and its end. An agent that keeps a to-do list is measured by it; for one that doesn't, nobody can know in advance how long it takes, so its bar creeps towards 92% as it works and fills when it's done.
+- **Tokens** come from every model request as it finishes, the main loop's and each agent's: new input and output, plus what was written to the prompt cache. Cache re-reads are left out: every request re-reads the whole conversation at a fraction of the price, and counting that would swamp the number.
 - **Sound** plays on every system: `afplay` on macOS, `paplay` or `aplay` on Linux, PowerShell's sound player on Windows. With no player around, the crew cheers silently.
 - **Notifications** go through the channel you chose in Claude Code (iTerm2, kitty, Ghostty, the terminal bell…), on any OS. The desktop app has no such channel, so there it's a toast.
 - **The art** is drawn after the little Claude in Claude Code's welcome logo, as animated SVG (CSS and SMIL, no scripts). Each picture's markup only changes when a crew member's mode does, so nothing flickers as the numbers move.
