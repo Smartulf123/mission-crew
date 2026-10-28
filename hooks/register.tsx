@@ -279,11 +279,18 @@ async function tick($: EngineInterface): Promise<void> {
   }
 }
 
-/** Starts the mission's clock at its first step or hire. */
+/**
+ * Starts the mission's clock at its first step or hire. A mission that has
+ * started keeps its clock: only a new mission (a clear, a new prompt) resets
+ * it, and work after its end resumes it (celebrateIfDone).
+ */
 async function startClock($: EngineInterface): Promise<void> {
   const at = await $.clock.now()
-  await update($, mission, old => (old.startedAt > 0 && old.endedAt === 0 ? old : { startedAt: at, endedAt: 0, tokens: old.endedAt > 0 ? 0 : old.tokens }))
-  await keepTime($)
+  await update($, mission, old => (old.startedAt > 0 ? old : { startedAt: at, endedAt: 0, tokens: 0 }))
+  const { endedAt } = await read($, mission)
+  if (endedAt === 0) {
+    await keepTime($)
+  }
 }
 
 /**
@@ -876,14 +883,15 @@ export const register: Register = (on, options) => {
               />
             </Box>
             {/* As wide as the longest label, so Claude beside it stays put when
-                "working" turns to "done" and the label gets shorter. */}
-            <Box key="crew-label" width={CREW_LABEL_COLUMNS} flexShrink={0}>
-              {m.crew > 0 ? (
+                "working" turns to "done" and the label gets shorter. With no
+                crew there is no label, and Claude stands at the band's edge. */}
+            {m.crew > 0 ? (
+              <Box key="crew-label" width={CREW_LABEL_COLUMNS} flexShrink={0}>
                 <Button key="crew-button" plain onPress={() => openCrew($)}>
                   <Text color={tone}>{crewLabel} ›</Text>
                 </Button>
-              ) : null}
-            </Box>
+              </Box>
+            ) : null}
           </Box>
         </Box>
         <Box key="bar" flexDirection="row" flexWrap="nowrap" alignItems="center">
@@ -916,14 +924,15 @@ export const register: Register = (on, options) => {
       const current = one.steps.find(step => step.status === 'in_progress') ?? one.steps.find(step => step.status === 'pending')
       return current === undefined ? `All ${one.steps.length} steps done` : `Step ${done + 1}/${one.steps.length}: ${current.text}`
     }
-    // Time and tokens: the mission's at the top, each crew member's by its bar.
+    // The mission's time and tokens at the top; by each crew member's bar only
+    // its tokens, its time being in its "Done in" line once it ends.
     const at = await read($, now)
     const run = await read($, mission)
     const missionMeter = [runTime(run.startedAt, run.endedAt, at), run.tokens > 0 ? `${tokenCount(run.tokens)} tokens` : '']
       .filter(Boolean)
       .join(' · ')
-    const meter = (one: CrewAgent) =>
-      [runTime(one.startedAt, one.endedAt, at), one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : ''].filter(Boolean).join(' · ')
+    const meter = (one: CrewAgent) => (one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : '')
+    const BAR = 10
 
     if (e.surface === 'terminal') {
       const { Box, Button, Text } = $.ui.resolve(e)
@@ -939,7 +948,7 @@ export const register: Register = (on, options) => {
               <Text>{fit(one.title, room)}</Text>
               <Text>
                 <Text color={tone(one)}>
-                  {textBar(one.pct, 12)} {one.pct}%
+                  {textBar(one.pct, BAR)} {one.pct}%
                 </Text>
                 <Text dimColor>{meter(one) ? `  ${meter(one)}` : ''}</Text>
               </Text>
@@ -1004,8 +1013,8 @@ export const register: Register = (on, options) => {
               </Button>
               <Text size="footnote">{fit(one.title, room)}</Text>
               <Text size="footnote">
-                <Text color={tone(one)}>{splitBar(one.pct, 12)[0]}</Text>
-                <Text dimColor>{splitBar(one.pct, 12)[1]}</Text>
+                <Text color={tone(one)}>{splitBar(one.pct, BAR)[0]}</Text>
+                <Text dimColor>{splitBar(one.pct, BAR)[1]}</Text>
                 <Text color={tone(one)}>{` ${one.pct}%`}</Text>
                 <Text dimColor>{meter(one) ? `   ${meter(one)}` : ''}</Text>
               </Text>

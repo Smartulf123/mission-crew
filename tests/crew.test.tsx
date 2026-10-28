@@ -404,7 +404,21 @@ test("the meter counts each agent's tokens and the mission's, cache re-reads lef
 
   const ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
   // 1200 in + 300 out + 500 newly cached = 2.0k; the 90k re-read is not counted.
+  // The mission's line has its time and tokens; the agent's, its tokens alone.
   expect(await ui.find({ type: 'Text', text: '  0s · 2.0k tokens' })).toBeDefined()
-  expect(await ui.find({ type: 'Text', text: '   0s · 2.0k tokens' })).toBeDefined()
+  expect(await ui.find({ type: 'Text', text: '   2.0k tokens' })).toBeDefined()
+  await ui.unmount()
+})
+
+test('with no crew the band keeps no empty room for a count', async ($, on) => {
+  on('tool.call', () => ({ result: {} }))
+  mock.store(on)
+  mock.clock(on, { now: 1_000_000 })
+
+  await $.tool.call({ tool: 'mcp__ccd_turn__update_plan', items: [{ content: 'Build it', status: 'in_progress' }] })
+  const ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  // Claude stands at the band's right edge, no empty label slot beside him.
+  expect(await ui.find({ key: 'worker' })).toBeDefined()
+  expect(await ui.find({ key: 'crew-label' })).toBeUndefined()
   await ui.unmount()
 })
