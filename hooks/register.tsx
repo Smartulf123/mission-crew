@@ -33,7 +33,9 @@ const mission = atom({ plugin: 'mission-crew', key: 'mission' } as const, EMPTY_
   shape: 'mission-1',
 })
 const flash = atom({ plugin: 'mission-crew', key: 'flash' } as const, null)
-const watching = atom({ plugin: 'mission-crew', key: 'watching' } as const, null)
+// The crew members the sidebar shows unfolded, and whether its hats are.
+const expanded = atom({ plugin: 'mission-crew', key: 'expanded' } as const, [] as string[])
+const isHatsOpen = atom({ plugin: 'mission-crew', key: 'isHatsOpen' } as const, false)
 // The time the band and sidebar draw by, ticked each second while work runs.
 const now = atom({ plugin: 'mission-crew', key: 'now' } as const, 0)
 const stats = atom({ plugin: 'mission-crew', key: 'stats' } as const, EMPTY_STATS, {
@@ -44,10 +46,9 @@ const isHidden = atom({ plugin: 'mission-crew', key: 'isHidden' } as const, fals
 const isCelebrated = atom({ plugin: 'mission-crew', key: 'isCelebrated' } as const, false)
 
 const SIDEBAR = 'mission-crew'
-const HATS = 'mission-crew-hats'
-const AGENT_PANE = 'mission-crew-agent'
-// How much of each agent's log is kept, and how long a line it says may run.
+// How much of each agent's log is kept and shown, and how long a line it says may run.
 const LOG_LINES = 60
+const LOG_SHOWN = 12
 const SAY_CHARS = 320
 // Room for the band's longest crew label, "99 agents working ›".
 const CREW_LABEL_COLUMNS = 20
@@ -465,16 +466,23 @@ async function agentEnded($: EngineInterface, id: string, isFailed: boolean): Pr
   await celebrateIfDone($)
 }
 
+/** Unfolds a crew member's steps and log in the sidebar, or folds them away. */
+async function toggleAgent($: EngineInterface, id: string): Promise<void> {
+  await update($, expanded, ids => (ids.includes(id) ? ids.filter(one => one !== id) : [...ids, id]))
+}
+
+async function toggleHats($: EngineInterface): Promise<void> {
+  await update($, isHatsOpen, isOpen => !isOpen)
+}
+
 /**
  * Switches the main view to a crew member's transcript, as the tasks list does.
- * Where it can't (the desktop app draws no main view a mod can switch, and the
- * demo's crew has no transcript), the agent pane shows its log instead.
+ * Only the terminal offers it: the desktop app draws no main view a mod can switch.
  */
-async function watchAgent($: EngineInterface, id: string, name: string): Promise<void> {
-  const viewed = isDemoAgent(id) ? { deny: 'demo' } : await $.ui.view({ agentId: id })
+async function watchTranscript($: EngineInterface, id: string): Promise<void> {
+  const viewed = await $.ui.view({ agentId: id })
   if (viewed.deny !== undefined) {
-    await update($, watching, () => id)
-    await $.ui.open({ id: AGENT_PANE, title: name })
+    $.ui.toast(`That transcript can't be opened now (${viewed.deny}).`)
   }
 }
 
@@ -636,10 +644,6 @@ async function openCrew($: EngineInterface): Promise<void> {
   await $.ui.open({ id: SIDEBAR, title: 'Claude Crew' })
 }
 
-async function openHats($: EngineInterface): Promise<void> {
-  await $.ui.open({ id: HATS, title: 'Hat collection' })
-}
-
 function stopDemo(): void {
   demo?.cancel()
   demo = undefined
@@ -652,6 +656,7 @@ async function clearMission($: EngineInterface): Promise<void> {
   await update($, isCelebrated, () => false)
   await update($, mission, () => EMPTY_MISSION)
   await update($, flash, () => null)
+  await update($, expanded, () => [])
 }
 
 async function startDemo($: EngineInterface): Promise<void> {
@@ -739,8 +744,9 @@ export const register: Register = (on, options) => {
       return { text: 'Claude Crew demo started: watch above the prompt, and click the agents to see the crew.' }
     }
     if (arg === 'hats') {
-      await openHats($)
-      return { text: 'Hat collection opened.' }
+      await update($, isHatsOpen, () => true)
+      await openCrew($)
+      return { text: 'Hat collection opened in the Claude Crew sidebar.' }
     }
     await openCrew($)
     return { text: 'Claude Crew sidebar opened.' }
@@ -953,10 +959,15 @@ export const register: Register = (on, options) => {
   })
 
   // The sidebar the crew count opens: every agent with its hat, its bar, its
-  // own steps and what it is doing, then the plan. A name opens its transcript.
+  // own steps and what it is doing, then the plan and the hat collection. A
+  // name unfolds that agent's steps and log in place; several can be open.
   on('ui.render', { component: 'Pane', requestId: SIDEBAR }, async ($, e) => {
     const { steps } = await read($, plan)
     const crew = (await read($, agents)).slice(-12)
+    const open = new Set(await read($, expanded))
+    const isHatsShown = await read($, isHatsOpen)
+    const record = await read($, stats)
+    const owned = new Set(wardrobe(record))
     const working = crew.filter(one => one.status === 'working').length
     const room = Math.max(12, e.props.bodyColumns - 12)
     const tone = (one: CrewAgent) => (one.status === 'done' ? 'success' : one.status === 'failed' ? 'error' : 'claude')
@@ -979,6 +990,11 @@ export const register: Register = (on, options) => {
       .filter(Boolean)
       .join(' · ')
     const meter = (one: CrewAgent) => (one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : '')
+    const recent = (one: CrewAgent) => one.log.slice(-LOG_SHOWN).reverse()
+    const stamp = (one: CrewAgent, line: CrewLogLine) => elapsed(line.at - one.startedAt)
+    const fold = (isOpen: boolean) => (isOpen ? '▾' : '›')
+    const summary = `${record.agents} agents hired · ${record.missions} missions · ${record.flawless} flawless · ${record.shinies} shiny`
+    const hintOf = (outfit: number) => UNLOCKS.find(one => one.outfit === outfit)?.hint ?? ''
     const BAR = 10
 
     if (e.surface === 'terminal') {
@@ -989,8 +1005,8 @@ export const register: Register = (on, options) => {
           <Text dimColor>{crew.length === 0 ? 'No agents yet.' : `${working} working · ${crew.length - working} finished`}</Text>
           {crew.map(one => (
             <Box key={`crew-${one.id}`} flexDirection="column" marginTop={1}>
-              <Button key={`watch-${one.id}`} plain onPress={() => watchAgent($, one.id, one.name)}>
-                {`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.isShiny ? '★ ' : ''}${one.name} (${one.kind}) ›`}
+              <Button key={`watch-${one.id}`} plain onPress={() => toggleAgent($, one.id)}>
+                {`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.isShiny ? '★ ' : ''}${one.name} (${one.kind}) ${fold(open.has(one.id))}`}
               </Button>
               <Text>{fit(one.title, room)}</Text>
               <Text>
@@ -1001,6 +1017,24 @@ export const register: Register = (on, options) => {
               </Text>
               {ownStep(one) ? <Text>{fit(ownStep(one), room)}</Text> : null}
               <Text dimColor>{fit(one.activity, room)}</Text>
+              {open.has(one.id) ? (
+                <Box key={`detail-${one.id}`} flexDirection="column" marginLeft={2}>
+                  {one.steps.map(step => (
+                    <Text color={stepTone(step)} dimColor={step.status === 'pending'}>{`${stepMark(step)}${fit(step.text, room - 2)}`}</Text>
+                  ))}
+                  {recent(one).map(line => (
+                    // What it says wraps; a tool line is cut to one.
+                    <Text dimColor={line.kind === 'tool'}>
+                      {`${stamp(one, line).padStart(7)}  ${line.kind === 'say' ? line.text : fit(line.text, room - 11)}`}
+                    </Text>
+                  ))}
+                  {isDemoAgent(one.id) ? null : (
+                    <Button key={`transcript-${one.id}`} plain onPress={() => watchTranscript($, one.id)}>
+                      Live transcript ›
+                    </Button>
+                  )}
+                </Box>
+              ) : null}
             </Box>
           ))}
           {steps.map(step => (
@@ -1009,9 +1043,18 @@ export const register: Register = (on, options) => {
               {fit(step.text, room)}
             </Text>
           ))}
-          <Button key="hats-button" plain onPress={() => openHats($)}>
-            Hat collection ›
+          <Button key="hats-button" plain onPress={() => toggleHats($)}>
+            {`Hat collection ${fold(isHatsShown)}`}
           </Button>
+          {isHatsShown ? (
+            <Box key="hats" flexDirection="column">
+              <Text bold>{`${owned.size}/${OUTFITS.length} hats`}</Text>
+              <Text dimColor>{summary}</Text>
+              {OUTFITS.map((name, i) =>
+                owned.has(i) ? <Text>{`${HAT_GLYPHS[i]} ${name}`}</Text> : <Text dimColor>{`?  ${hintOf(i)}`}</Text>,
+              )}
+            </Box>
+          ) : null}
         </Box>
       )
     }
@@ -1034,46 +1077,88 @@ export const register: Register = (on, options) => {
           <Text dimColor>No agents yet. They line up here when Claude sends out subagents.</Text>
         ) : (
           <Text size="caption" dimColor>
-            Click a name to watch that agent work.
+            Click a name to see what that agent did and said.
           </Text>
         )}
         {crew.map(one => (
-          <Box key={`crew-${one.id}`} flexDirection="row" alignItems="center" columnGap={1}>
-            <Svg
-              source={figureSvg(
-                one.status === 'done' ? 'done' : one.status === 'failed' ? 'fail' : 'work',
-                one.outfit,
-                one.look,
-                hash(one.id),
-                one.isShiny,
-              )}
-              width={FIGURE_W}
-              height={FIGURE_H}
-              alt={`${one.isShiny ? 'Shiny ' : ''}${one.name} in a ${OUTFITS[one.outfit % OUTFITS.length]}`}
-              isInteractive
-            />
-            <Box flexDirection="column" flexGrow={1} flexShrink={1}>
-              <Button key={`watch-${one.id}`} plain onPress={() => watchAgent($, one.id, one.name)}>
-                <Text weight="bold">{one.name}</Text>
-                {one.isShiny ? <Text color="#F2B83A" weight="bold">{'  ★ shiny'}</Text> : ''}
-                <Text dimColor size="footnote">{`  ${one.kind}  ›`}</Text>
-              </Button>
-              <Text size="footnote">{fit(one.title, room)}</Text>
-              <Text size="footnote">
-                <Text color={tone(one)}>{splitBar(one.pct, BAR)[0]}</Text>
-                <Text dimColor>{splitBar(one.pct, BAR)[1]}</Text>
-                <Text color={tone(one)}>{` ${one.pct}%`}</Text>
-                <Text dimColor>{meter(one) ? `   ${meter(one)}` : ''}</Text>
-              </Text>
-              {ownStep(one) ? (
-                <Text size="footnote" color="claude">
-                  {fit(ownStep(one), room)}
+          <Box key={`crew-${one.id}`} flexDirection="column" rowGap={1}>
+            <Box flexDirection="row" alignItems="center" columnGap={1}>
+              <Svg
+                source={figureSvg(
+                  one.status === 'done' ? 'done' : one.status === 'failed' ? 'fail' : 'work',
+                  one.outfit,
+                  one.look,
+                  hash(one.id),
+                  one.isShiny,
+                )}
+                width={FIGURE_W}
+                height={FIGURE_H}
+                alt={`${one.isShiny ? 'Shiny ' : ''}${one.name} in a ${OUTFITS[one.outfit % OUTFITS.length]}`}
+                isInteractive
+              />
+              <Box flexDirection="column" flexGrow={1} flexShrink={1}>
+                <Button key={`watch-${one.id}`} plain onPress={() => toggleAgent($, one.id)}>
+                  <Text weight="bold">{one.name}</Text>
+                  {one.isShiny ? <Text color="#F2B83A" weight="bold">{'  ★ shiny'}</Text> : ''}
+                  <Text dimColor size="footnote">{`  ${one.kind}  ${fold(open.has(one.id))}`}</Text>
+                </Button>
+                <Text size="footnote">{fit(one.title, room)}</Text>
+                <Text size="footnote">
+                  <Text color={tone(one)}>{splitBar(one.pct, BAR)[0]}</Text>
+                  <Text dimColor>{splitBar(one.pct, BAR)[1]}</Text>
+                  <Text color={tone(one)}>{` ${one.pct}%`}</Text>
+                  <Text dimColor>{meter(one) ? `   ${meter(one)}` : ''}</Text>
                 </Text>
-              ) : null}
-              <Text size="caption" dimColor>
-                {fit(one.activity, room)}
-              </Text>
+                {ownStep(one) ? (
+                  <Text size="footnote" color="claude">
+                    {fit(ownStep(one), room)}
+                  </Text>
+                ) : null}
+                <Text size="caption" dimColor>
+                  {fit(one.activity, room)}
+                </Text>
+              </Box>
             </Box>
+            {open.has(one.id) ? (
+              <Box key={`detail-${one.id}`} flexDirection="column" rowGap={1} marginLeft={2}>
+                {one.steps.length > 0 ? (
+                  <Box flexDirection="column">
+                    <Text size="caption" weight="bold" dimColor>
+                      ITS STEPS
+                    </Text>
+                    {one.steps.map(step => (
+                      <Text size="footnote" color={stepTone(step)} dimColor={step.status === 'pending'}>
+                        {stepMark(step)}
+                        {step.text}
+                      </Text>
+                    ))}
+                  </Box>
+                ) : null}
+                <Box flexDirection="column">
+                  <Text size="caption" weight="bold" dimColor>
+                    {one.log.length === 0 ? 'NOTHING YET' : 'WHAT IT DID AND SAID · NEWEST FIRST'}
+                  </Text>
+                  {recent(one).map(line => (
+                    <Box flexDirection="row" columnGap={1}>
+                      <Box width={7} flexShrink={0}>
+                        <Text size="caption" dimColor>
+                          {stamp(one, line)}
+                        </Text>
+                      </Box>
+                      <Box flexGrow={1} flexShrink={1}>
+                        {line.kind === 'say' ? (
+                          <Text size="footnote">{line.text}</Text>
+                        ) : (
+                          <Text size="footnote" dimColor>
+                            {line.text}
+                          </Text>
+                        )}
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            ) : null}
           </Box>
         ))}
         {steps.length > 0 ? (
@@ -1089,188 +1174,38 @@ export const register: Register = (on, options) => {
             ))}
           </Box>
         ) : null}
-        <Button key="hats-button" plain onPress={() => openHats($)}>
-          <Text color="claude">Hat collection ›</Text>
+        <Button key="hats-button" plain onPress={() => toggleHats($)}>
+          <Text color="claude">{`Hat collection ${fold(isHatsShown)}`}</Text>
         </Button>
-      </Box>
-    )
-  })
-
-  // One crew member up close, where its transcript can't take the main view:
-  // its task, bar and steps, then what it has done and said, newest first.
-  on('ui.render', { component: 'Pane', requestId: AGENT_PANE }, async ($, e) => {
-    const id = await read($, watching)
-    const one = (await read($, agents)).find(agent => agent.id === id)
-    const at = await read($, now)
-    const room = Math.max(12, e.props.bodyColumns - 10)
-    const lines = one === undefined ? [] : one.log.slice(-30).reverse()
-    const stamp = (line: CrewLogLine) => (one === undefined ? '' : elapsed(line.at - one.startedAt))
-
-    if (one === undefined) {
-      const { Box, Button, Text } = $.ui.resolve(e)
-      return (
-        <Box flexDirection="column" rowGap={1}>
-          <Text dimColor>That agent has left the crew. A new prompt clears finished work.</Text>
-          <Button key="back-button" plain onPress={() => openCrew($)}>
-            ‹ The crew
-          </Button>
-        </Box>
-      )
-    }
-    const tone = one.status === 'done' ? 'success' : one.status === 'failed' ? 'error' : 'claude'
-    const meter = [runTime(one.startedAt, one.endedAt, at), one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : '']
-      .filter(Boolean)
-      .join(' · ')
-    const stepMark = (step: CrewStep) => (step.status === 'completed' ? '✓ ' : step.status === 'in_progress' ? '▶ ' : '○ ')
-
-    if (e.surface === 'terminal') {
-      const { Box, Button, Text } = $.ui.resolve(e)
-      return (
-        <Box flexDirection="column">
-          <Text bold>{`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.name} (${one.kind})`}</Text>
-          <Text>{fit(one.title, room)}</Text>
-          <Text color={tone}>{`${textBar(one.pct, 10)} ${one.pct}%  ${meter}`}</Text>
-          {one.steps.map(step => (
-            <Text dimColor={step.status === 'pending'}>{`${stepMark(step)}${fit(step.text, room)}`}</Text>
-          ))}
-          {lines.map(line => (
-            <Text dimColor={line.kind === 'tool'}>{`${stamp(line).padStart(7)}  ${fit(line.text, room)}`}</Text>
-          ))}
-          <Button key="back-button" plain onPress={() => openCrew($)}>
-            ‹ The crew
-          </Button>
-        </Box>
-      )
-    }
-
-    const { Box, Button, Svg, Text } = $.ui.resolve(e)
-    return (
-      <Box flexDirection="column" rowGap={1}>
-        <Box flexDirection="row" alignItems="center" columnGap={1}>
-          <Svg
-            source={figureSvg(
-              one.status === 'done' ? 'done' : one.status === 'failed' ? 'fail' : 'work',
-              one.outfit,
-              one.look,
-              hash(one.id),
-              one.isShiny,
-            )}
-            width={FIGURE_W}
-            height={FIGURE_H}
-            alt={`${one.isShiny ? 'Shiny ' : ''}${one.name} in a ${OUTFITS[one.outfit % OUTFITS.length]}`}
-            isInteractive
-          />
-          <Box flexDirection="column" flexGrow={1} flexShrink={1}>
-            <Text>
-              <Text weight="bold">{one.name}</Text>
-              {one.isShiny ? <Text color="#F2B83A" weight="bold">{'  ★ shiny'}</Text> : ''}
-              <Text dimColor size="footnote">{`  ${one.kind}`}</Text>
+        {isHatsShown ? (
+          <Box key="hats" flexDirection="column" rowGap={1}>
+            <Text weight="bold">{`${owned.size} of ${OUTFITS.length} hats`}</Text>
+            <Text size="caption" dimColor>
+              {summary}
             </Text>
-            <Text size="footnote">{one.title}</Text>
-            <Text size="footnote">
-              <Text color={tone}>{splitBar(one.pct, 10)[0]}</Text>
-              <Text dimColor>{splitBar(one.pct, 10)[1]}</Text>
-              <Text color={tone}>{` ${one.pct}%`}</Text>
-              <Text dimColor>{meter ? `   ${meter}` : ''}</Text>
-            </Text>
-          </Box>
-        </Box>
-        {one.steps.length > 0 ? (
-          <Box flexDirection="column">
-            <Text size="caption" weight="bold" dimColor>
-              ITS STEPS
-            </Text>
-            {one.steps.map(step => (
-              <Text size="footnote" color={step.status === 'in_progress' ? 'claude' : undefined} dimColor={step.status === 'pending'}>
-                {stepMark(step)}
-                {step.text}
-              </Text>
-            ))}
+            <Box flexDirection="row" flexWrap="wrap" columnGap={2} rowGap={1}>
+              {OUTFITS.map((name, i) => (
+                <Box key={`hat-${i}`} flexDirection="column" alignItems="center" width={16}>
+                  <Svg
+                    source={collectionSvg(i, owned.has(i))}
+                    width={FIGURE_W}
+                    height={FIGURE_H}
+                    alt={owned.has(i) ? name : 'A hat still to earn'}
+                    isInteractive
+                  />
+                  <Text size="footnote" weight="bold" dimColor={!owned.has(i)}>
+                    {owned.has(i) ? name : '???'}
+                  </Text>
+                  {owned.has(i) ? null : (
+                    <Text size="caption" dimColor>
+                      {hintOf(i)}
+                    </Text>
+                  )}
+                </Box>
+              ))}
+            </Box>
           </Box>
         ) : null}
-        <Box flexDirection="column" rowGap={1}>
-          <Text size="caption" weight="bold" dimColor>
-            {lines.length === 0 ? 'NOTHING YET' : 'WHAT IT DID AND SAID · NEWEST FIRST'}
-          </Text>
-          {lines.map(line => (
-            <Box flexDirection="row" columnGap={1}>
-              <Box width={7} flexShrink={0}>
-                <Text size="caption" dimColor>
-                  {stamp(line)}
-                </Text>
-              </Box>
-              <Box flexGrow={1} flexShrink={1}>
-                {line.kind === 'say' ? (
-                  <Text size="footnote">{line.text}</Text>
-                ) : (
-                  <Text size="footnote" dimColor>
-                    {line.text}
-                  </Text>
-                )}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-        <Button key="back-button" plain onPress={() => openCrew($)}>
-          <Text color="claude">‹ The crew</Text>
-        </Button>
-      </Box>
-    )
-  })
-
-  // The hat collection: every hat, the earned ones worn, the rest grey with
-  // what earns them, and the record that earns them.
-  on('ui.render', { component: 'Pane', requestId: HATS }, async ($, e) => {
-    const record = await read($, stats)
-    const owned = new Set(wardrobe(record))
-    const summary = `${record.agents} agents hired · ${record.missions} missions · ${record.flawless} flawless · ${record.shinies} shiny`
-    const hintOf = (outfit: number) => UNLOCKS.find(one => one.outfit === outfit)?.hint ?? ''
-
-    if (e.surface === 'terminal') {
-      const { Box, Text } = $.ui.resolve(e)
-      return (
-        <Box flexDirection="column">
-          <Text bold>{`${owned.size}/${OUTFITS.length} hats`}</Text>
-          <Text dimColor>{summary}</Text>
-          {OUTFITS.map((name, i) =>
-            owned.has(i) ? (
-              <Text>{`${HAT_GLYPHS[i]} ${name}`}</Text>
-            ) : (
-              <Text dimColor>{`?  ${hintOf(i)}`}</Text>
-            ),
-          )}
-        </Box>
-      )
-    }
-
-    const { Box, Svg, Text } = $.ui.resolve(e)
-    return (
-      <Box flexDirection="column" rowGap={1}>
-        <Text weight="bold">{`${owned.size} of ${OUTFITS.length} hats`}</Text>
-        <Text size="caption" dimColor>
-          {summary}
-        </Text>
-        <Box key="hats" flexDirection="row" flexWrap="wrap" columnGap={2} rowGap={1}>
-          {OUTFITS.map((name, i) => (
-            <Box key={`hat-${i}`} flexDirection="column" alignItems="center" width={16}>
-              <Svg
-                source={collectionSvg(i, owned.has(i))}
-                width={FIGURE_W}
-                height={FIGURE_H}
-                alt={owned.has(i) ? name : 'A hat still to earn'}
-                isInteractive
-              />
-              <Text size="footnote" weight="bold" dimColor={!owned.has(i)}>
-                {owned.has(i) ? name : '???'}
-              </Text>
-              {owned.has(i) ? null : (
-                <Text size="caption" dimColor>
-                  {hintOf(i)}
-                </Text>
-              )}
-            </Box>
-          ))}
-        </Box>
       </Box>
     )
   })

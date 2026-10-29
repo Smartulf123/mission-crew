@@ -25,13 +25,13 @@
 - Each one's task, its progress bar and what it's doing right now (`Reading main.ts`, `Searching "refresh"`, `Running npm test`…).
 - **Time and tokens:** how long each agent has worked and how many tokens it has used, counted live, with the mission's totals at the top.
 - **Real progress:** when an agent keeps its own to-do list, its bar follows that list and shows its current step ("Step 2/3: Write the tests").
-- **Click a name to watch that agent work:** in the terminal the main view switches to its live transcript. In the desktop app, which keeps that view to itself, the agent's own pane opens instead: its steps and a live log of every tool it uses and everything it says, newest first.
+- **Click a name to see what that agent is up to:** its details unfold right in the sidebar, its steps and a live log of every tool it uses and everything it says, newest first. Open as many as you like; click again to fold one away. In the terminal a **Live transcript ›** link also switches the main view to that agent.
 - They type while they work, celebrate when they finish, and go grey and dizzy if they fail.
 - The plan's steps, ticked off as Claude goes.
 
 **The party:** when a mission completes, the band's Claude jumps in confetti, an 8-bit jingle plays, and you get a notification (or a toast where your terminal doesn't send notifications).
 
-**The hat collection** (`/crew hats`): six more hats are earned as you go, and your record is kept across every session:
+**The hat collection** (click **Hat collection** at the foot of the sidebar, or `/crew hats`): six more hats are earned as you go, and your record is kept across every session:
 
 | Hat | How to earn it |
 | --- | --- |
@@ -70,7 +70,7 @@ In the Claude desktop app, where `/plugin` does not run: click **+** next to the
 | --- | --- |
 | `/crew` | Opens the crew sidebar |
 | `/crew demo` | Plays a short made-up mission, so you can see everything at once (the demo earns no hats) |
-| `/crew hats` | Opens your hat collection and your record |
+| `/crew hats` | Opens the sidebar with your hat collection and record unfolded |
 | `/crew hide` | Hides the band (`/crew` brings it back) |
 | `/crew clear` | Forgets the current plan and crew |
 

@@ -32,7 +32,7 @@ export type CrewAgent = {
   endedAt: number
   /** New input and output tokens its requests used (cache re-reads left out). */
   tokens: number
-  /** What it has done and said, oldest first; the agent pane shows it. */
+  /** What it has done and said, oldest first; the sidebar shows it unfolded. */
   log: CrewLogLine[]
 }
 
@@ -60,8 +60,10 @@ declare module 'claude-code' {
       stats: Shaped<CrewStats>
       mission: Shaped<CrewMission>
       flash: CrewFlash | null
-      /** The agent the agent pane shows. */
-      watching: string | null
+      /** The crew members the sidebar shows unfolded. */
+      expanded: string[]
+      /** Whether the sidebar shows the hat collection. */
+      isHatsOpen: boolean
       now: number
       isBusy: boolean
       isHidden: boolean

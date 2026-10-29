@@ -205,40 +205,19 @@ test("an agent's own to-do list drives its bar and shows its step", async ($, on
   await band.unmount()
 })
 
-test("clicking an agent's name opens its transcript", async ($, on) => {
-  const viewed: unknown[] = []
-  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
-  on('clock.now', () => ({ value: 1_000 }))
-  on('ui.view', (_, e) => {
-    viewed.push(e)
-    return { value: {} }
-  })
-  mock.store(on)
-
-  await $.agent.spawn(SPAWN)
-  for (const surface of ['desktop', 'terminal'] as const) {
-    const ui = await $.ui.mount({ ...SIDEBAR, surface })
-    await ui.press({ key: 'watch-a1' })
-    await ui.unmount()
-  }
-  expect(viewed).toEqual([{ agentId: 'a1' }, { agentId: 'a1' }])
-})
-
-test("where the main view can't switch, a name opens the agent's own pane", async ($, on) => {
+test("clicking a name unfolds what that agent did and said, in the sidebar", async ($, on) => {
   const opened: string[] = []
   let at = 1_000
   on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
   on('agent.list', () => ({ value: [] }))
   on('clock.now', () => ({ value: at }))
   on('tool.call', () => ({ result: {} }))
-  // The desktop app: no main view a mod can switch.
-  on('ui.view', () => ({ value: { deny: 'no main view here' } }))
   on('ui.open', (_, e) => {
     opened.push(e.id)
     return { value: { isPlaced: true } }
   })
   on('turn.step', async function* () {
-    return { turnId: 't1', index: 0, answer: 'Found the  bug.\nFixing it now.', toolUses: [], stopReason: 'end_turn', usage: null }
+    return { turnId: 't1', index: 0, answer: 'Found the  bug.' + String.fromCharCode(10) + 'Fixing it now.', toolUses: [], stopReason: 'end_turn', usage: null }
   })
   mock.store(on)
 
@@ -250,23 +229,47 @@ test("where the main view can't switch, a name opens the agent's own pane", asyn
     // The stream passes through untouched.
   }
 
-  const sidebar = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
-  await sidebar.press({ key: 'watch-a1' })
-  await sidebar.unmount()
-  expect(opened).toEqual(['mission-crew-agent'])
-
-  const AGENT = { ...SIDEBAR, requestId: 'mission-crew-agent', props: { ...SIDEBAR.props, title: 'agent' } }
   for (const surface of ['desktop', 'terminal'] as const) {
-    const pane = await $.ui.mount({ ...AGENT, surface })
-    expect(await pane.find({ type: 'Text', text: /Map the codebase/ })).toBeDefined()
+    let ui = await $.ui.mount({ ...SIDEBAR, surface })
+    // Folded: the latest activity only, not what it said.
+    expect(await ui.find({ key: 'detail-a1' })).toBeUndefined()
+    await ui.press({ key: 'watch-a1' })
+    await ui.unmount()
+
+    ui = await $.ui.mount({ ...SIDEBAR, surface })
+    expect(await ui.find({ key: 'detail-a1' })).toBeDefined()
     // What it said, on one line, and what it did, each stamped from its start.
-    expect(await pane.find({ type: 'Text', text: /Found the bug\. Fixing it now\./ })).toBeDefined()
-    expect(await pane.find({ type: 'Text', text: /Reading main\.ts/ })).toBeDefined()
-    expect(await pane.find({ type: 'Text', text: /5s/ })).toBeDefined()
-    await pane.press({ key: 'back-button' })
-    await pane.unmount()
+    expect(await ui.find({ type: 'Text', text: /Found the bug\. Fixing it now\./ })).toBeDefined()
+    expect(await ui.find({ type: 'Text', text: /^\s*5s/ })).toBeDefined()
+    // A second click folds it again.
+    await ui.press({ key: 'watch-a1' })
+    await ui.unmount()
+    ui = await $.ui.mount({ ...SIDEBAR, surface })
+    expect(await ui.find({ key: 'detail-a1' })).toBeUndefined()
+    await ui.unmount()
   }
-  expect(opened).toEqual(['mission-crew-agent', 'mission-crew', 'mission-crew'])
+  // All of it in the one sidebar: no pane of its own.
+  expect(opened).toEqual([])
+})
+
+test("the terminal can still switch to an agent's live transcript", async ($, on) => {
+  const viewed: unknown[] = []
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('clock.now', () => ({ value: 1_000 }))
+  on('ui.view', (_, e) => {
+    viewed.push(e)
+    return { value: {} }
+  })
+  mock.store(on)
+
+  await $.agent.spawn(SPAWN)
+  let ui = await $.ui.mount({ ...SIDEBAR, surface: 'terminal' })
+  await ui.press({ key: 'watch-a1' })
+  await ui.unmount()
+  ui = await $.ui.mount({ ...SIDEBAR, surface: 'terminal' })
+  await ui.press({ key: 'transcript-a1' })
+  await ui.unmount()
+  expect(viewed).toEqual([{ agentId: 'a1' }])
 })
 
 test('a failed agent earns the rubber duck, and the collection shows it', async ($, on) => {
@@ -290,7 +293,12 @@ test('a failed agent earns the rubber duck, and the collection shows it', async 
 
   expect(toasts.some(text => text.includes('rubber duck'))).toBe(true)
 
-  const ui = await $.ui.mount({ ...SIDEBAR, requestId: 'mission-crew-hats', surface: 'desktop' })
+  // The hat collection unfolds at the foot of the sidebar.
+  let ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  expect(await ui.find({ key: 'hats' })).toBeUndefined()
+  await ui.press({ key: 'hats-button' })
+  await ui.unmount()
+  ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
   // The crew's one agent ended, so its mission ended too: counted, not flawless.
   expect(await ui.find({ type: 'Text', text: '4 agents hired · 1 missions · 0 flawless · 0 shiny' })).toBeDefined()
   expect(await ui.find({ type: 'Text', text: '13 of 18 hats' })).toBeDefined()
@@ -328,9 +336,12 @@ test('a completed mission plays the jingle and says so once', async ($, on) => {
   expect(said).toEqual(['Mission complete!', 'toast: Mission complete!'])
 
   // No crew, so the mission counts but is not a flawless one.
-  const ui = await $.ui.mount({ ...SIDEBAR, requestId: 'mission-crew-hats', surface: 'desktop' })
-  expect(await ui.find({ type: 'Text', text: '0 agents hired · 1 missions · 0 flawless · 0 shiny' })).toBeDefined()
+  const ui = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  await ui.press({ key: 'hats-button' })
   await ui.unmount()
+  const hats = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  expect(await hats.find({ type: 'Text', text: '0 agents hired · 1 missions · 0 flawless · 0 shiny' })).toBeDefined()
+  await hats.unmount()
 })
 
 test('with sound and notifications off the party is quiet', { options: { sound: false, notifications: false } }, async ($, on) => {
