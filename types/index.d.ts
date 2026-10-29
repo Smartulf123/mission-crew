@@ -6,6 +6,9 @@ export type CrewStep = { id?: string; text: string; status: CrewStepStatus }
 /** The plan, with the percentage it shows now and the one it showed before. */
 export type CrewPlan = { steps: CrewStep[]; pct: number; prevPct: number }
 
+/** One line of an agent's log: a tool it used, or something it said. */
+export type CrewLogLine = { at: number; kind: 'tool' | 'say'; text: string }
+
 /**
  * One subagent, dressed up: its outfit, look and shininess are picked when it
  * is hired. `steps` is its own to-do list, when it keeps one.
@@ -29,6 +32,8 @@ export type CrewAgent = {
   endedAt: number
   /** New input and output tokens its requests used (cache re-reads left out). */
   tokens: number
+  /** What it has done and said, oldest first; the agent pane shows it. */
+  log: CrewLogLine[]
 }
 
 /** The mission's clock and meter; 0 for a time not reached yet. */
@@ -55,6 +60,8 @@ declare module 'claude-code' {
       stats: Shaped<CrewStats>
       mission: Shaped<CrewMission>
       flash: CrewFlash | null
+      /** The agent the agent pane shows. */
+      watching: string | null
       now: number
       isBusy: boolean
       isHidden: boolean

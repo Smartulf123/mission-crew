@@ -224,6 +224,51 @@ test("clicking an agent's name opens its transcript", async ($, on) => {
   expect(viewed).toEqual([{ agentId: 'a1' }, { agentId: 'a1' }])
 })
 
+test("where the main view can't switch, a name opens the agent's own pane", async ($, on) => {
+  const opened: string[] = []
+  let at = 1_000
+  on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))
+  on('agent.list', () => ({ value: [] }))
+  on('clock.now', () => ({ value: at }))
+  on('tool.call', () => ({ result: {} }))
+  // The desktop app: no main view a mod can switch.
+  on('ui.view', () => ({ value: { deny: 'no main view here' } }))
+  on('ui.open', (_, e) => {
+    opened.push(e.id)
+    return { value: { isPlaced: true } }
+  })
+  on('turn.step', async function* () {
+    return { turnId: 't1', index: 0, answer: 'Found the  bug.\nFixing it now.', toolUses: [], stopReason: 'end_turn', usage: null }
+  })
+  mock.store(on)
+
+  await $.agent.spawn(SPAWN)
+  at = 6_000
+  await $.tool.call({ tool: 'Read', file_path: '/src/app/main.ts', agentId: 'a1' })
+  at = 9_000
+  for await (const _ of $.turn.step({ turnId: 't1', index: 0, model: 'test', messageCount: 1, agentId: 'a1' })) {
+    // The stream passes through untouched.
+  }
+
+  const sidebar = await $.ui.mount({ ...SIDEBAR, surface: 'desktop' })
+  await sidebar.press({ key: 'watch-a1' })
+  await sidebar.unmount()
+  expect(opened).toEqual(['mission-crew-agent'])
+
+  const AGENT = { ...SIDEBAR, requestId: 'mission-crew-agent', props: { ...SIDEBAR.props, title: 'agent' } }
+  for (const surface of ['desktop', 'terminal'] as const) {
+    const pane = await $.ui.mount({ ...AGENT, surface })
+    expect(await pane.find({ type: 'Text', text: /Map the codebase/ })).toBeDefined()
+    // What it said, on one line, and what it did, each stamped from its start.
+    expect(await pane.find({ type: 'Text', text: /Found the bug\. Fixing it now\./ })).toBeDefined()
+    expect(await pane.find({ type: 'Text', text: /Reading main\.ts/ })).toBeDefined()
+    expect(await pane.find({ type: 'Text', text: /5s/ })).toBeDefined()
+    await pane.press({ key: 'back-button' })
+    await pane.unmount()
+  }
+  expect(opened).toEqual(['mission-crew-agent', 'mission-crew', 'mission-crew'])
+})
+
 test('a failed agent earns the rubber duck, and the collection shows it', async ($, on) => {
   const toasts: string[] = []
   on('agent.spawn', () => ({ model: 'test', agentId: 'a1' }))

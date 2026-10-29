@@ -1,7 +1,7 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, Timer } from 'claude-code'
 
-import type { CrewAgent, CrewMission, CrewPlan, CrewStats, CrewStep, CrewStepStatus } from '../types'
+import type { CrewAgent, CrewLogLine, CrewMission, CrewPlan, CrewStats, CrewStep, CrewStepStatus } from '../types'
 import {
   collectionSvg,
   crewName,
@@ -27,12 +27,13 @@ const plan = atom({ plugin: 'mission-crew', key: 'plan' } as const, EMPTY_PLAN, 
   shape: 'plan-1',
 })
 const agents = atom({ plugin: 'mission-crew', key: 'agents' } as const, [] as CrewAgent[], {
-  shape: 'agents-3',
+  shape: 'agents-4',
 })
 const mission = atom({ plugin: 'mission-crew', key: 'mission' } as const, EMPTY_MISSION, {
   shape: 'mission-1',
 })
 const flash = atom({ plugin: 'mission-crew', key: 'flash' } as const, null)
+const watching = atom({ plugin: 'mission-crew', key: 'watching' } as const, null)
 // The time the band and sidebar draw by, ticked each second while work runs.
 const now = atom({ plugin: 'mission-crew', key: 'now' } as const, 0)
 const stats = atom({ plugin: 'mission-crew', key: 'stats' } as const, EMPTY_STATS, {
@@ -44,6 +45,10 @@ const isCelebrated = atom({ plugin: 'mission-crew', key: 'isCelebrated' } as con
 
 const SIDEBAR = 'mission-crew'
 const HATS = 'mission-crew-hats'
+const AGENT_PANE = 'mission-crew-agent'
+// How much of each agent's log is kept, and how long a line it says may run.
+const LOG_LINES = 60
+const SAY_CHARS = 320
 // Room for the band's longest crew label, "99 agents working ›".
 const CREW_LABEL_COLUMNS = 20
 // The record across sessions lives in the plugin's store under this key.
@@ -367,6 +372,7 @@ async function addAgent(
       startedAt,
       endedAt: 0,
       tokens: 0,
+      log: [],
     }
     return [...list, agent].slice(-24)
   })
@@ -376,13 +382,38 @@ async function addAgent(
   }
 }
 
+function logged(log: CrewLogLine[], line: CrewLogLine): CrewLogLine[] {
+  return [...log, line].slice(-LOG_LINES)
+}
+
 async function agentWorked($: EngineInterface, id: string, activity: string): Promise<void> {
+  const at = await $.clock.now()
   await update($, agents, list =>
     list.map(one =>
       one.id === id && one.status === 'working'
-        ? { ...one, tools: one.tools + 1, activity, prevPct: one.pct, pct: agentPct(one.tools + 1, one.steps) }
+        ? {
+            ...one,
+            tools: one.tools + 1,
+            activity,
+            prevPct: one.pct,
+            pct: agentPct(one.tools + 1, one.steps),
+            log: logged(one.log, { at, kind: 'tool', text: activity }),
+          }
         : one,
     ),
+  )
+}
+
+/** Keeps what an agent wrote in its log, on one line and cut to a readable length. */
+async function agentSaid($: EngineInterface, id: string, answer: string): Promise<void> {
+  const text = answer.replace(/\s+/g, ' ').trim()
+  if (text === '') {
+    return
+  }
+  const at = await $.clock.now()
+  const line = text.length > SAY_CHARS ? `${text.slice(0, SAY_CHARS - 1)}…` : text
+  await update($, agents, list =>
+    list.map(one => (one.id === id ? { ...one, log: logged(one.log, { at, kind: 'say', text: line }) } : one)),
   )
 }
 
@@ -417,6 +448,7 @@ async function agentEnded($: EngineInterface, id: string, isFailed: boolean): Pr
             activity: isFailed
               ? `✗ Stopped after ${elapsed(at - one.startedAt)}`
               : `✓ Done in ${elapsed(at - one.startedAt)}`,
+            log: logged(one.log, { at, kind: 'tool', text: isFailed ? '✗ Stopped' : '✓ Done' }),
           }
         : one,
     ),
@@ -433,15 +465,16 @@ async function agentEnded($: EngineInterface, id: string, isFailed: boolean): Pr
   await celebrateIfDone($)
 }
 
-/** Switches the main view to a crew member's transcript, as the tasks list does. */
+/**
+ * Switches the main view to a crew member's transcript, as the tasks list does.
+ * Where it can't (the desktop app draws no main view a mod can switch, and the
+ * demo's crew has no transcript), the agent pane shows its log instead.
+ */
 async function watchAgent($: EngineInterface, id: string, name: string): Promise<void> {
-  const viewed = await $.ui.view({ agentId: id })
+  const viewed = isDemoAgent(id) ? { deny: 'demo' } : await $.ui.view({ agentId: id })
   if (viewed.deny !== undefined) {
-    $.ui.toast(
-      isDemoAgent(id)
-        ? `${name} is part of the demo: on a real mission this opens their live transcript.`
-        : `${name}'s transcript can't be opened now (${viewed.deny}).`,
-    )
+    await update($, watching, () => id)
+    await $.ui.open({ id: AGENT_PANE, title: name })
   }
 }
 
@@ -581,6 +614,13 @@ const DEMO_ACTIVITY = [
   'Counting semicolons',
 ]
 
+const DEMO_SAYINGS = [
+  "Let me look around first and see how the pieces fit.",
+  "Found it. The bug is in the retry loop, it never resets the counter.",
+  "Two tests fail. Fixing the first one now.",
+  "All green. Writing up what I changed.",
+]
+
 const DEMO_CREW = [
   { at: 2, id: 'demo-explore', kind: 'Explore', title: 'Map out the codebase', endAt: 13 },
   { at: 4, id: 'demo-tests', kind: 'general-purpose', title: 'Write the test suite', endAt: 24, plan: ['Find the gaps', 'Write the tests', 'Make them pass'] },
@@ -641,6 +681,9 @@ async function demoTick($: EngineInterface, tick: number): Promise<void> {
     } else if (tick > member.at && tick < member.endAt) {
       const line = DEMO_ACTIVITY[(tick * 7 + hash(member.id)) % DEMO_ACTIVITY.length] ?? 'Thinking'
       await agentWorked($, member.id, member.isFailed && tick > member.endAt - 4 ? 'Lost in node_modules' : line)
+      if ((tick - member.at) % 4 === 1) {
+        await agentSaid($, member.id, DEMO_SAYINGS[Math.floor((tick - member.at) / 4) % DEMO_SAYINGS.length] ?? '')
+      }
       // Made-up requests, so the meter has something to count.
       await addTokens($, member.id, 900 + ((tick * 7919 + hash(member.id)) % 2600))
       if (member.plan !== undefined && (tick - member.at) % 6 === 0) {
@@ -790,6 +833,10 @@ export const register: Register = (on, options) => {
     if (usage !== null) {
       const count = usage.input_tokens + usage.output_tokens + (usage.cache_creation_input_tokens ?? 0)
       void addTokens($, e.agentId, count).catch(() => undefined)
+    }
+    // What a crew member writes goes in its log, for the agent pane.
+    if (e.agentId !== undefined && result.answer !== '') {
+      void agentSaid($, e.agentId, result.answer).catch(() => undefined)
     }
     return result
   })
@@ -1044,6 +1091,128 @@ export const register: Register = (on, options) => {
         ) : null}
         <Button key="hats-button" plain onPress={() => openHats($)}>
           <Text color="claude">Hat collection ›</Text>
+        </Button>
+      </Box>
+    )
+  })
+
+  // One crew member up close, where its transcript can't take the main view:
+  // its task, bar and steps, then what it has done and said, newest first.
+  on('ui.render', { component: 'Pane', requestId: AGENT_PANE }, async ($, e) => {
+    const id = await read($, watching)
+    const one = (await read($, agents)).find(agent => agent.id === id)
+    const at = await read($, now)
+    const room = Math.max(12, e.props.bodyColumns - 10)
+    const lines = one === undefined ? [] : one.log.slice(-30).reverse()
+    const stamp = (line: CrewLogLine) => (one === undefined ? '' : elapsed(line.at - one.startedAt))
+
+    if (one === undefined) {
+      const { Box, Button, Text } = $.ui.resolve(e)
+      return (
+        <Box flexDirection="column" rowGap={1}>
+          <Text dimColor>That agent has left the crew. A new prompt clears finished work.</Text>
+          <Button key="back-button" plain onPress={() => openCrew($)}>
+            ‹ The crew
+          </Button>
+        </Box>
+      )
+    }
+    const tone = one.status === 'done' ? 'success' : one.status === 'failed' ? 'error' : 'claude'
+    const meter = [runTime(one.startedAt, one.endedAt, at), one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : '']
+      .filter(Boolean)
+      .join(' · ')
+    const stepMark = (step: CrewStep) => (step.status === 'completed' ? '✓ ' : step.status === 'in_progress' ? '▶ ' : '○ ')
+
+    if (e.surface === 'terminal') {
+      const { Box, Button, Text } = $.ui.resolve(e)
+      return (
+        <Box flexDirection="column">
+          <Text bold>{`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.name} (${one.kind})`}</Text>
+          <Text>{fit(one.title, room)}</Text>
+          <Text color={tone}>{`${textBar(one.pct, 10)} ${one.pct}%  ${meter}`}</Text>
+          {one.steps.map(step => (
+            <Text dimColor={step.status === 'pending'}>{`${stepMark(step)}${fit(step.text, room)}`}</Text>
+          ))}
+          {lines.map(line => (
+            <Text dimColor={line.kind === 'tool'}>{`${stamp(line).padStart(7)}  ${fit(line.text, room)}`}</Text>
+          ))}
+          <Button key="back-button" plain onPress={() => openCrew($)}>
+            ‹ The crew
+          </Button>
+        </Box>
+      )
+    }
+
+    const { Box, Button, Svg, Text } = $.ui.resolve(e)
+    return (
+      <Box flexDirection="column" rowGap={1}>
+        <Box flexDirection="row" alignItems="center" columnGap={1}>
+          <Svg
+            source={figureSvg(
+              one.status === 'done' ? 'done' : one.status === 'failed' ? 'fail' : 'work',
+              one.outfit,
+              one.look,
+              hash(one.id),
+              one.isShiny,
+            )}
+            width={FIGURE_W}
+            height={FIGURE_H}
+            alt={`${one.isShiny ? 'Shiny ' : ''}${one.name} in a ${OUTFITS[one.outfit % OUTFITS.length]}`}
+            isInteractive
+          />
+          <Box flexDirection="column" flexGrow={1} flexShrink={1}>
+            <Text>
+              <Text weight="bold">{one.name}</Text>
+              {one.isShiny ? <Text color="#F2B83A" weight="bold">{'  ★ shiny'}</Text> : ''}
+              <Text dimColor size="footnote">{`  ${one.kind}`}</Text>
+            </Text>
+            <Text size="footnote">{one.title}</Text>
+            <Text size="footnote">
+              <Text color={tone}>{splitBar(one.pct, 10)[0]}</Text>
+              <Text dimColor>{splitBar(one.pct, 10)[1]}</Text>
+              <Text color={tone}>{` ${one.pct}%`}</Text>
+              <Text dimColor>{meter ? `   ${meter}` : ''}</Text>
+            </Text>
+          </Box>
+        </Box>
+        {one.steps.length > 0 ? (
+          <Box flexDirection="column">
+            <Text size="caption" weight="bold" dimColor>
+              ITS STEPS
+            </Text>
+            {one.steps.map(step => (
+              <Text size="footnote" color={step.status === 'in_progress' ? 'claude' : undefined} dimColor={step.status === 'pending'}>
+                {stepMark(step)}
+                {step.text}
+              </Text>
+            ))}
+          </Box>
+        ) : null}
+        <Box flexDirection="column" rowGap={1}>
+          <Text size="caption" weight="bold" dimColor>
+            {lines.length === 0 ? 'NOTHING YET' : 'WHAT IT DID AND SAID · NEWEST FIRST'}
+          </Text>
+          {lines.map(line => (
+            <Box flexDirection="row" columnGap={1}>
+              <Box width={7} flexShrink={0}>
+                <Text size="caption" dimColor>
+                  {stamp(line)}
+                </Text>
+              </Box>
+              <Box flexGrow={1} flexShrink={1}>
+                {line.kind === 'say' ? (
+                  <Text size="footnote">{line.text}</Text>
+                ) : (
+                  <Text size="footnote" dimColor>
+                    {line.text}
+                  </Text>
+                )}
+              </Box>
+            </Box>
+          ))}
+        </Box>
+        <Button key="back-button" plain onPress={() => openCrew($)}>
+          <Text color="claude">‹ The crew</Text>
         </Button>
       </Box>
     )
