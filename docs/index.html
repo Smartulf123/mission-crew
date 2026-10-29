@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Crew · demo</title>
+  <meta name="description" content="A 27-second demo of Claude Crew, a Claude Code mod with a mission bar and a pixel crew for every subagent.">
+  <meta property="og:title" content="Claude Crew">
+  <meta property="og:description" content="A mission bar above your prompt, and a pixel crew for every subagent.">
+  <meta property="og:image" content="https://smartulf123.github.io/mission-crew/poster.png">
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 30%, #2a1d17, #121110 70%); color: #f5f0e8; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { width: min(1100px, 100% - 32px); padding: 40px 0; text-align: center; }
+    h1 { margin: 0 0 4px; font-size: clamp(28px, 5vw, 44px); background: linear-gradient(90deg, #e8a283, #d97757); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    p { margin: 0 0 24px; color: #b5afa6; }
+    video { width: 100%; border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5), 0 0 0 1px rgba(217, 119, 87, .25); background: #000; }
+    code { display: inline-block; margin-top: 24px; padding: 10px 16px; border-radius: 10px; background: #1c1a18; border: 1px solid #3a2a22; font-size: 14px; overflow-wrap: anywhere; }
+    a { color: #d97757; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Claude Crew</h1>
+    <p>A mission bar above your prompt, and a pixel crew for every subagent.</p>
+    <video src="promo.mp4" poster="poster.png" controls playsinline preload="metadata"></video>
+    <code>/plugin install mission-crew --marketplace Smartulf123/mission-crew</code>
+    <p style="margin-top:16px"><a href="https://github.com/Smartulf123/mission-crew">github.com/Smartulf123/mission-crew</a></p>
+  </main>
+</body>
+</html>
