@@ -2,6 +2,8 @@
 
 **See what Claude is doing while it works.** A [Claude Code](https://claude.com/claude-code) mod that puts a mission bar above your prompt while Claude works through a plan, and a pixel-art crew in a sidebar, one Claude in a silly hat for every subagent it sends out.
 
+<a href="https://github.com/Smartulf123/mission-crew/blob/main/assets/promo.mp4"><img src="assets/promo-poster.png" alt="Watch the 27-second demo of Claude Crew: the mission bar, the pixel crew sidebar, the hat collection and the mission-complete party"></a>
+
 > **Made for the Claude desktop app.** That's where the pixel crew animates. In a plain terminal the mod still works, as a simpler text version of the same band and sidebar.
 
 ![The mission band above the prompt: the bar fills while Claude types at his laptop, then MISSION COMPLETE! and he jumps in confetti](assets/band.svg)
