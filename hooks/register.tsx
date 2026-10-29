@@ -48,7 +48,8 @@ const isCelebrated = atom({ plugin: 'mission-crew', key: 'isCelebrated' } as con
 const SIDEBAR = 'mission-crew'
 // How much of each agent's log is kept and shown, and how long a line it says may run.
 const LOG_LINES = 60
-const LOG_SHOWN = 12
+const LOG_SHOWN = 5
+const SAY_SHOWN = 140
 const SAY_CHARS = 320
 // Room for the band's longest crew label, "99 agents working ›".
 const CREW_LABEL_COLUMNS = 20
@@ -990,8 +991,10 @@ export const register: Register = (on, options) => {
       .filter(Boolean)
       .join(' · ')
     const meter = (one: CrewAgent) => (one.tokens > 0 ? `${tokenCount(one.tokens)} tokens` : '')
-    const recent = (one: CrewAgent) => one.log.slice(-LOG_SHOWN).reverse()
-    const stamp = (one: CrewAgent, line: CrewLogLine) => elapsed(line.at - one.startedAt)
+    // Unfolded, an agent shows its last few lines, oldest first, so they read
+    // like a short conversation ending at now; what it says is cut to two lines.
+    const recent = (one: CrewAgent) => one.log.slice(-LOG_SHOWN)
+    const said = (line: CrewLogLine) => (line.text.length > SAY_SHOWN ? `${line.text.slice(0, SAY_SHOWN - 1)}…` : line.text)
     const fold = (isOpen: boolean) => (isOpen ? '▾' : '›')
     const summary = `${record.agents} agents hired · ${record.missions} missions · ${record.flawless} flawless · ${record.shinies} shiny`
     const hintOf = (outfit: number) => UNLOCKS.find(one => one.outfit === outfit)?.hint ?? ''
@@ -1022,12 +1025,10 @@ export const register: Register = (on, options) => {
                   {one.steps.map(step => (
                     <Text color={stepTone(step)} dimColor={step.status === 'pending'}>{`${stepMark(step)}${fit(step.text, room - 2)}`}</Text>
                   ))}
-                  {recent(one).map(line => (
+                  {recent(one).map(line =>
                     // What it says wraps; a tool line is cut to one.
-                    <Text dimColor={line.kind === 'tool'}>
-                      {`${stamp(one, line).padStart(7)}  ${line.kind === 'say' ? line.text : fit(line.text, room - 11)}`}
-                    </Text>
-                  ))}
+                    line.kind === 'say' ? <Text>{`“${said(line)}”`}</Text> : <Text dimColor>{fit(line.text, room - 2)}</Text>,
+                  )}
                   {isDemoAgent(one.id) ? null : (
                     <Button key={`transcript-${one.id}`} plain onPress={() => watchTranscript($, one.id)}>
                       Live transcript ›
@@ -1123,9 +1124,6 @@ export const register: Register = (on, options) => {
               <Box key={`detail-${one.id}`} flexDirection="column" rowGap={1} marginLeft={2}>
                 {one.steps.length > 0 ? (
                   <Box flexDirection="column">
-                    <Text size="caption" weight="bold" dimColor>
-                      ITS STEPS
-                    </Text>
                     {one.steps.map(step => (
                       <Text size="footnote" color={stepTone(step)} dimColor={step.status === 'pending'}>
                         {stepMark(step)}
@@ -1134,28 +1132,21 @@ export const register: Register = (on, options) => {
                     ))}
                   </Box>
                 ) : null}
-                <Box flexDirection="column">
-                  <Text size="caption" weight="bold" dimColor>
-                    {one.log.length === 0 ? 'NOTHING YET' : 'WHAT IT DID AND SAID · NEWEST FIRST'}
-                  </Text>
-                  {recent(one).map(line => (
-                    <Box flexDirection="row" columnGap={1}>
-                      <Box width={7} flexShrink={0}>
-                        <Text size="caption" dimColor>
-                          {stamp(one, line)}
-                        </Text>
-                      </Box>
-                      <Box flexGrow={1} flexShrink={1}>
-                        {line.kind === 'say' ? (
-                          <Text size="footnote">{line.text}</Text>
-                        ) : (
-                          <Text size="footnote" dimColor>
-                            {line.text}
-                          </Text>
-                        )}
-                      </Box>
-                    </Box>
-                  ))}
+                <Box flexDirection="column" rowGap={1}>
+                  {one.log.length === 0 ? (
+                    <Text size="caption" dimColor>
+                      Nothing yet.
+                    </Text>
+                  ) : null}
+                  {recent(one).map(line =>
+                    line.kind === 'say' ? (
+                      <Text size="footnote">{`“${said(line)}”`}</Text>
+                    ) : (
+                      <Text size="caption" dimColor>
+                        {fit(line.text, room)}
+                      </Text>
+                    ),
+                  )}
                 </Box>
               </Box>
             ) : null}

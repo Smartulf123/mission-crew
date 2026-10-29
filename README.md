@@ -25,7 +25,7 @@
 - Each one's task, its progress bar and what it's doing right now (`Reading main.ts`, `Searching "refresh"`, `Running npm test`…).
 - **Time and tokens:** how long each agent has worked and how many tokens it has used, counted live, with the mission's totals at the top.
 - **Real progress:** when an agent keeps its own to-do list, its bar follows that list and shows its current step ("Step 2/3: Write the tests").
-- **Click a name to see what that agent is up to:** its details unfold right in the sidebar, its steps and a live log of every tool it uses and everything it says, newest first. Open as many as you like; click again to fold one away. In the terminal a **Live transcript ›** link also switches the main view to that agent.
+- **Click a name to see what that agent is up to:** it unfolds right in the sidebar with its steps and the last few things it did and said. Open as many as you like; click again to fold one away. In the terminal a **Live transcript ›** link also switches the main view to that agent.
 - They type while they work, celebrate when they finish, and go grey and dizzy if they fail.
 - The plan's steps, ticked off as Claude goes.
 

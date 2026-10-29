@@ -238,9 +238,10 @@ test("clicking a name unfolds what that agent did and said, in the sidebar", asy
 
     ui = await $.ui.mount({ ...SIDEBAR, surface })
     expect(await ui.find({ key: 'detail-a1' })).toBeDefined()
-    // What it said, on one line, and what it did, each stamped from its start.
+    // What it said, on one line, and what it did; no headings or time stamps.
     expect(await ui.find({ type: 'Text', text: /Found the bug\. Fixing it now\./ })).toBeDefined()
-    expect(await ui.find({ type: 'Text', text: /^\s*5s/ })).toBeDefined()
+    expect((await ui.findAll({ type: 'Text', text: /Reading main\.ts/ })).length).toBe(2)
+    expect(await ui.find({ type: 'Text', text: /NEWEST FIRST/ })).toBeUndefined()
     // A second click folds it again.
     await ui.press({ key: 'watch-a1' })
     await ui.unmount()
