@@ -233,6 +233,8 @@ test("clicking a name unfolds what that agent did and said, in the sidebar", asy
     let ui = await $.ui.mount({ ...SIDEBAR, surface })
     // Folded: the latest activity only, not what it said.
     expect(await ui.find({ key: 'detail-a1' })).toBeUndefined()
+    // The name stands alone: no agent type beside it.
+    expect(await ui.find({ type: 'Text', text: /Explore/ })).toBeUndefined()
     await ui.press({ key: 'watch-a1' })
     await ui.unmount()
 

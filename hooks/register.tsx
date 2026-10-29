@@ -1009,7 +1009,7 @@ export const register: Register = (on, options) => {
           {crew.map(one => (
             <Box key={`crew-${one.id}`} flexDirection="column" marginTop={1}>
               <Button key={`watch-${one.id}`} plain onPress={() => toggleAgent($, one.id)}>
-                {`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.isShiny ? '★ ' : ''}${one.name} (${one.kind}) ${fold(open.has(one.id))}`}
+                {`${HAT_GLYPHS[one.outfit % HAT_GLYPHS.length]} ${one.isShiny ? '★ ' : ''}${one.name} ${fold(open.has(one.id))}`}
               </Button>
               <Text>{fit(one.title, room)}</Text>
               <Text>
@@ -1101,7 +1101,7 @@ export const register: Register = (on, options) => {
                 <Button key={`watch-${one.id}`} plain onPress={() => toggleAgent($, one.id)}>
                   <Text weight="bold">{one.name}</Text>
                   {one.isShiny ? <Text color="#F2B83A" weight="bold">{'  ★ shiny'}</Text> : ''}
-                  <Text dimColor size="footnote">{`  ${one.kind}  ${fold(open.has(one.id))}`}</Text>
+                  <Text dimColor size="footnote">{`  ${fold(open.has(one.id))}`}</Text>
                 </Button>
                 <Text size="footnote">{fit(one.title, room)}</Text>
                 <Text size="footnote">
