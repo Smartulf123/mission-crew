@@ -1,0 +1,30 @@
+{
+  "name": "mission-crew",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Crew for OpenCode: the mission bar and one pixel Claude in a silly hat for every helper agent, in the OpenCode sidebar. The Claude Code mod lives beside it in this repository.",
+  "keywords": ["opencode", "opencode-plugin", "opencode-tui-plugin", "claude-code", "subagents", "pixel-art"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Smartulf123/mission-crew"
+  },
+  "homepage": "https://github.com/Smartulf123/mission-crew#crew-for-opencode",
+  "type": "module",
+  "exports": {
+    ".": "./opencode/src/index.ts",
+    "./tui": "./opencode/src/tui.tsx"
+  },
+  "files": ["opencode/src", "sounds/mission-complete.wav", "README.md", "LICENSE"],
+  "engines": {
+    "opencode": ">=2.0.0"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.2.5"
+  },
+  "peerDependencies": {
+    "@opentui/core": ">=0.6.6",
+    "@opentui/solid": ">=0.6.6",
+    "solid-js": ">=1.9.0"
+  }
+}

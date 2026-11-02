@@ -1,0 +1,20 @@
+{
+  "name": "mission-crew-opencode-dev",
+  "private": true,
+  "description": "Tools for working on Crew for OpenCode. The plugin itself is the repository root's package.",
+  "type": "module",
+  "scripts": {
+    "test": "bun test --conditions=browser",
+    "typecheck": "tsc -p .",
+    "screenshot": "bun --conditions=browser scripts/screenshot.ts"
+  },
+  "devDependencies": {
+    "@opencode/client": "^2.2.5",
+    "@opencode/plugin": "^2.2.5",
+    "@opencode/theme": "^2.2.5",
+    "@opentui/core": "^0.8.1",
+    "@opentui/solid": "^0.8.1",
+    "solid-js": "^1.9.18",
+    "typescript": "^5.9.3"
+  }
+}

@@ -10,6 +10,8 @@
 
 ![The crew: twelve pixel Claudes in hats, typing at their laptops](assets/crew.svg)
 
+> **Using OpenCode?** The same crew runs in OpenCode's sidebar too: see [Crew for OpenCode](#crew-for-opencode).
+
 ## What you get
 
 **The mission band**, right above the prompt:
@@ -81,6 +83,39 @@ Two switches, both on by default, in `/config` under the plugin's name:
 - **Sound:** the jingle when a mission completes and when you unlock a hat.
 - **Notifications:** the "Mission complete!" message.
 
+## Crew for OpenCode
+
+The same crew, as a plugin for [OpenCode](https://opencode.ai) 2. It lives in the session sidebar: the mission bar beside a Claude at his laptop, then a pixel Claude in a hat for every helper agent, with its task, what it's doing right now, and its time and tokens. Helpers type while they work, jump in confetti when they finish and go grey and dizzy if they fail; a finished mission gets the confetti and the jingle.
+
+![Crew for OpenCode in the sidebar, during a mission and when it completes](assets/opencode-sidebar.svg)
+
+It's drawn in the terminal: every character holds four pixels of the same art as the desktop crew, so the hats, the laptop and the confetti all come along.
+
+**Install:**
+
+```bash
+opencode plugin add github:Smartulf123/mission-crew
+```
+
+Then turn on OpenCode's to-do list, which the mission bar follows, in your global `opencode.json` (`~/.config/opencode/opencode.json`, on Windows `%USERPROFILE%\.config\opencode\opencode.json`), and restart OpenCode:
+
+```json
+{
+  "experimental": {
+    "todo": true
+  }
+}
+```
+
+**Use:**
+
+- When the window is narrow OpenCode hides the sidebar: **ctrl+x** then **b** shows it.
+- **`/crew-demo`** plays a 40-second made-up mission with every pose, no tokens spent.
+- With more than five helpers each one shrinks to a single line.
+- To silence the jingle, change the plugin's entry in `opencode.json` to `{ "package": "github:Smartulf123/mission-crew", "options": { "sound": false } }`.
+
+The plugin only reads what OpenCode already knows: the main session's `todowrite` list, the helper sessions, and each helper's latest tool call.
+
 ## How it works
 
 Claude Crew is a hooks module for Claude Code's plugin API, with no setup:
@@ -106,6 +141,17 @@ claude plugin test .
 ```
 
 `hooks/register.tsx` holds the hooks and the drawing, `hooks/art.ts` the pixel art (plain functions with no imports, so you can preview them in a browser), and `types/index.d.ts` the state the mod keeps.
+
+The OpenCode plugin is in `opencode/`: `src/tui.tsx` draws the sidebar, `src/pixels.ts` turns the pixel art into quarter-block characters, and `src/crew.ts` holds the names, the mission and the demo. The repository's `package.json` is what `opencode plugin add` installs. From `opencode/`:
+
+```bash
+npm install
+npm run typecheck
+npm test            # draws the sidebar in OpenTUI's test renderer (needs Bun)
+npm run screenshot  # redraws assets/opencode-sidebar.svg
+```
+
+To run your copy, list the repository's folder in `~/.config/opencode/cli.json` (`{ "plugins": ["*", "/path/to/mission-crew"] }`); OpenCode reloads it when you save.
 
 ## License
 
